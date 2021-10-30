@@ -1,9 +1,9 @@
-plugins {
-    java
-}
+subprojects {
+    apply(plugin = "java-library")
 
-repositories {
-    mavenCentral()
-    maven("https://repo.codemc.io/repository/nms/")
-    mavenLocal()
+    repositories {
+        mavenLocal()
+        maven("https://repo.codemc.io/repository/nms/")
+        mavenCentral()
+    }
 }
