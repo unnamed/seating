@@ -9,7 +9,7 @@ public class AdaptionModuleFactory {
             .split("\\.")[3];
 
     private static final String CLASS_NAME = AdaptionModuleFactory.class.getPackage().getName()
-            + '.' + VERSION + ".AdaptionModule_" + VERSION;
+            + '.' + VERSION + ".AdaptionModule" + VERSION;
 
     private AdaptionModuleFactory() {
         throw new UnsupportedOperationException();
