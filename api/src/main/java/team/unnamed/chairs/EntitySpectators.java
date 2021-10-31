@@ -18,15 +18,15 @@ public class EntitySpectators {
     }
 
     public void addSpectator(Player spectator) {
-        this.spectators.add(spectator.getUniqueId());
+        spectators.add(spectator.getUniqueId());
     }
 
     public void removeSpectator(Player spectator) {
-        this.spectators.remove(spectator.getUniqueId());
+        spectators.remove(spectator.getUniqueId());
     }
 
     public boolean isSpectator(Player spectator) {
-        return this.spectators.contains(spectator.getUniqueId());
+        return spectators.contains(spectator.getUniqueId());
     }
 
     public void consumeAsPlayers(Consumer<Player> action) {

@@ -44,13 +44,13 @@ public abstract class AbstractEntityTrackerEntry
         if (!player.u().getPlayerChunkMap().a(
                 player, location.getBlockX() >> 4, location.getBlockZ() >> 4
         )) {
-            if (this.trackedPlayers.remove(player)) {
+            if (trackedPlayers.remove(player)) {
                 hide(player);
             }
             return;
         }
 
-        if (!this.trackedPlayers.contains(player)) {
+        if (!trackedPlayers.contains(player)) {
             addToTrackedPlayers(player);
             show(player);
         }
@@ -66,7 +66,7 @@ public abstract class AbstractEntityTrackerEntry
 
     @Override
     public void a(EntityPlayer player) {
-        if (this.trackedPlayers.remove(player)) {
+        if (trackedPlayers.remove(player)) {
             hide(player);
         }
     }

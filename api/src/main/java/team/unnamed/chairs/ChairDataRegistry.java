@@ -16,15 +16,15 @@ public class ChairDataRegistry {
     }
 
     public void addChairRegistry(Player player, ChairData chairData) {
-        this.registry.put(player.getUniqueId(), chairData);
+        registry.put(player.getUniqueId(), chairData);
     }
 
     public @Nullable ChairData getRegistry(Player player) {
-        return this.registry.get(player.getUniqueId());
+        return registry.get(player.getUniqueId());
     }
 
     public void removeChairRegistry(Player player) {
-        this.registry.remove(player.getUniqueId());
+        registry.remove(player.getUniqueId());
     }
 
 }

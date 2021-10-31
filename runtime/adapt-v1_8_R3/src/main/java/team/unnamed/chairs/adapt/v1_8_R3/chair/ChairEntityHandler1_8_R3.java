@@ -25,12 +25,12 @@ public class ChairEntityHandler1_8_R3 implements ChairEntityHandler {
     public void assignArmorStand(ChairData chairData) {
         EntityTrackerEntry trackerEntry = new ChairEntityTrackerEntry(chairData);
         chairData.setEntityId(ChairUtils.generateId(chairData));
-        this.trackerRegistry.bindEntry(chairData, trackerEntry);
+        trackerRegistry.bindEntry(chairData, trackerEntry);
     }
 
     @Override
     public void destroyChair(ChairData chairData) {
-        this.trackerRegistry.unbindEntry(chairData);
+        trackerRegistry.unbindEntry(chairData);
     }
 
 }
