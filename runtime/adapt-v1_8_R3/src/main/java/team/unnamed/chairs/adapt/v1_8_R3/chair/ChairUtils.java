@@ -42,14 +42,11 @@ public final class ChairUtils {
 
         Location location = chairData.getLocation();
         EntityArmorStand armorStand = new EntityArmorStand(
-                ((CraftWorld) location.getWorld()).getHandle()
+                ((CraftWorld) location.getWorld()).getHandle(),
+                location.getX(), location.getY(), location.getZ()
         );
 
-        armorStand.setLocation(
-                location.getX(), location.getY(), location.getZ(),
-                location.getYaw(), location.getPitch()
-        );
-
+        armorStand.d(chairData.getEntityId());
         armorStand.setGravity(false);
         armorStand.setInvisible(true);
         armorStand.setSmall(true);
