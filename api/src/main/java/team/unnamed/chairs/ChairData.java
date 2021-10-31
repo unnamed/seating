@@ -2,6 +2,7 @@ package team.unnamed.chairs;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -14,7 +15,7 @@ public class ChairData {
 
     private final EntitySpectators spectators;
 
-    public ChairData(UUID ownerId, Location location) {
+    private ChairData(UUID ownerId, Location location) {
         this.ownerId = ownerId;
         this.location = location;
         this.spectators = new EntitySpectators();
@@ -42,6 +43,21 @@ public class ChairData {
 
     public EntitySpectators getSpectators() {
         return spectators;
+    }
+
+    @Override
+    public String toString() {
+        return "ChairData{" +
+                "ownerId=" + ownerId +
+                ", location=" + location +
+                ", entityId=" + entityId +
+                '}';
+    }
+
+    public static ChairData create(Player player, Block block) {
+        Location location = block.getLocation().clone();
+        location.add(0.5, -0.5, 0.5);
+        return new ChairData(player.getUniqueId(), location);
     }
 
 }
