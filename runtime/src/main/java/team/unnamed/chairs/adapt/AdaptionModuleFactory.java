@@ -6,10 +6,10 @@ public class AdaptionModuleFactory {
 
     private static final String VERSION = Bukkit.getServer().getClass()
             .getName()
-            .split("\\.")[3];
+            .split("\\.")[3].substring(1);
 
     private static final String CLASS_NAME = AdaptionModuleFactory.class.getPackage().getName()
-            + '.' + VERSION + ".AdaptionModule" + VERSION;
+            + ".v" + VERSION + ".AdaptionModule" + VERSION;
 
     private AdaptionModuleFactory() {
         throw new UnsupportedOperationException();
