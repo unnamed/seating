@@ -1,52 +1,53 @@
 package team.unnamed.chairs.listener;
 
-import net.minecraft.server.v1_8_R3.EntityArmorStand;
-
-import net.minecraft.server.v1_8_R3.EntityPlayer;
-import net.minecraft.server.v1_8_R3.PacketPlayOutAttachEntity;
-import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntityLiving;
-import net.minecraft.server.v1_8_R3.PlayerConnection;
-
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+
+import team.unnamed.chairs.ChairData;
+import team.unnamed.chairs.ChairDataRegistry;
+import team.unnamed.chairs.ChairMaterialChecker;
+import team.unnamed.chairs.adapt.entity.ChairEntityHandler;
 
 public class PlayerInteractListener implements Listener {
 
+    private final ChairMaterialChecker chairMaterialChecker;
+    private final ChairEntityHandler chairEntityHandler;
+    private final ChairDataRegistry chairDataRegistry;
+
+    public PlayerInteractListener(ChairMaterialChecker chairMaterialChecker,
+                                  ChairEntityHandler chairEntityHandler,
+                                  ChairDataRegistry chairDataRegistry) {
+        this.chairMaterialChecker = chairMaterialChecker;
+        this.chairEntityHandler = chairEntityHandler;
+        this.chairDataRegistry = chairDataRegistry;
+    }
+
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
-        Block block = event.getClickedBlock();
-        Material type = block.getType();
-
-        if (!type.name().contains("STAIRS")) {
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
             return;
         }
 
-        Player player = event.getPlayer();
-        EntityArmorStand armorStand = new EntityArmorStand(
-                ((CraftWorld) player.getWorld()).getHandle()
-        );
+        Block block = event.getClickedBlock();
 
-        Location location = block.getLocation();
-        armorStand.setLocation(
-                location.getX() + 0.5,
-                location.getY() - 0.75,
-                location.getZ() + 0.5, location.getYaw(), location.getPitch()
-        );
-        armorStand.setInvisible(true);
-        armorStand.setSmall(true);
+        if (block == null) {
+            return;
+        }
 
-        EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
-        PlayerConnection playerConnection = entityPlayer.playerConnection;
+        Material type = block.getType();
 
-        playerConnection.sendPacket(new PacketPlayOutSpawnEntityLiving(armorStand));
-        playerConnection.sendPacket(new PacketPlayOutAttachEntity(0, entityPlayer, armorStand));
+        if (chairMaterialChecker.test(type)) {
+            Player player = event.getPlayer();
+            ChairData chairData = ChairData.create(player, block);
+
+            chairEntityHandler.assignArmorStand(chairData);
+            chairDataRegistry.addChairRegistry(player, chairData);
+        }
     }
 
 }
