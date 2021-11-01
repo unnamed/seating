@@ -31,7 +31,9 @@ public class ChairHandler {
             String stairMaterialKey = (String) configuredStairs;
 
             if (stairMaterialKey.equals("ALL")) {
-                return material.name().contains("STAIRS");
+                return material.name().contains("STAIRS")
+                        || material == Material.CARPET
+                        || material == Material.STEP;
             } else {
                 Material stairMaterial = Material.matchMaterial(stairMaterialKey);
 
@@ -44,8 +46,15 @@ public class ChairHandler {
         } else if (configuredStairs instanceof List) {
             @SuppressWarnings("unchecked") List<String> stairsMaterialKeys =
                     (List<String>) configuredStairs;
+            String materialName = material.name();
 
-            return stairsMaterialKeys.contains(material.name());
+            for (String stairMaterialKey : stairsMaterialKeys) {
+                if (materialName.contains(stairMaterialKey)) {
+                    return true;
+                }
+            }
+
+            return false;
         } else {
             return false;
         }
