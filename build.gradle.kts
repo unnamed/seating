@@ -14,6 +14,7 @@ subprojects {
     repositories {
         mavenLocal()
         maven("https://repo.codemc.io/repository/nms/")
+        maven("https://maven.enginehub.org/repo/")
         mavenCentral()
     }
 }
