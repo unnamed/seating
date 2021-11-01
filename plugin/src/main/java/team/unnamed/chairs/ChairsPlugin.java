@@ -15,7 +15,7 @@ import team.unnamed.chairs.listener.PlayerJoinListener;
 public class ChairsPlugin extends JavaPlugin {
 
     private PacketInterceptorAssigner packetInterceptorAssigner;
-    private ChairMaterialChecker chairMaterialChecker;
+    private ChairHandler chairHandler;
     private ChairEntityHandler chairEntityHandler;
     private ChairDataRegistry chairDataRegistry;
 
@@ -28,7 +28,7 @@ public class ChairsPlugin extends JavaPlugin {
         packetInterceptorAssigner = adaptionModule.getPacketInterceptorAssigner();
         chairEntityHandler = adaptionModule.getChairEntityHandler();
 
-        chairMaterialChecker = new ChairMaterialChecker(getConfig());
+        chairHandler = new ChairHandler(getConfig());
         chairDataRegistry = new ChairDataRegistry();
 
         adaptionModule.getPacketInterceptorRegister(chairDataRegistry, chairEntityHandler)
@@ -38,7 +38,7 @@ public class ChairsPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         registerListeners(
-                new PlayerInteractListener(chairMaterialChecker, chairEntityHandler, chairDataRegistry),
+                new PlayerInteractListener(chairHandler, chairEntityHandler, chairDataRegistry),
                 new PlayerJoinListener(packetInterceptorAssigner)
         );
     }
