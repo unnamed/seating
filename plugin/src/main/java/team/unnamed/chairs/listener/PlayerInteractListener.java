@@ -12,17 +12,21 @@ import team.unnamed.chairs.ChairData;
 import team.unnamed.chairs.ChairDataRegistry;
 import team.unnamed.chairs.ChairHandler;
 import team.unnamed.chairs.adapt.entity.ChairEntityHandler;
+import team.unnamed.chairs.adapt.hook.HookRegistry;
 
 public class PlayerInteractListener implements Listener {
 
     private final ChairHandler chairHandler;
+    private final HookRegistry hookRegistry;
     private final ChairEntityHandler chairEntityHandler;
     private final ChairDataRegistry chairDataRegistry;
 
     public PlayerInteractListener(ChairHandler chairHandler,
+                                  HookRegistry hookRegistry,
                                   ChairEntityHandler chairEntityHandler,
                                   ChairDataRegistry chairDataRegistry) {
         this.chairHandler = chairHandler;
+        this.hookRegistry = hookRegistry;
         this.chairEntityHandler = chairEntityHandler;
         this.chairDataRegistry = chairDataRegistry;
     }
@@ -42,21 +46,23 @@ public class PlayerInteractListener implements Listener {
         Player player = event.getPlayer();
 
         if (chairHandler.isAllowedToUse(player)) {
-            if (chairHandler.isWorldDenied(block.getWorld())) {
-                return;
-            }
+            if (hookRegistry.isAvailableToSeat(block.getLocation(), player)) {
+                if (chairHandler.isWorldDenied(block.getWorld())) {
+                    return;
+                }
 
-            if (chairDataRegistry.isAlreadyUsed(block.getLocation())) {
-                return;
-            }
+                if (chairDataRegistry.isAlreadyUsed(block.getLocation())) {
+                    return;
+                }
 
-            Material type = block.getType();
+                Material type = block.getType();
 
-            if (chairHandler.isAllowedMaterial(type)) {
-                ChairData chairData = ChairData.create(player, block);
+                if (chairHandler.isAllowedMaterial(type)) {
+                    ChairData chairData = ChairData.create(player, block);
 
-                chairEntityHandler.assignArmorStand(chairData);
-                chairDataRegistry.addChairRegistry(player, chairData);
+                    chairEntityHandler.assignArmorStand(chairData);
+                    chairDataRegistry.addChairRegistry(player, chairData);
+                }
             }
         }
     }

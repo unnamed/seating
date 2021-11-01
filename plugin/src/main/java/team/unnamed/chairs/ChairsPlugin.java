@@ -8,6 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import team.unnamed.chairs.adapt.AdaptionModule;
 import team.unnamed.chairs.adapt.AdaptionModuleFactory;
 import team.unnamed.chairs.adapt.entity.ChairEntityHandler;
+import team.unnamed.chairs.adapt.hook.HookRegistry;
 import team.unnamed.chairs.adapt.intercept.PacketInterceptorAssigner;
 import team.unnamed.chairs.listener.PlayerInteractListener;
 import team.unnamed.chairs.listener.PlayerJoinListener;
@@ -15,6 +16,7 @@ import team.unnamed.chairs.listener.PlayerJoinListener;
 public class ChairsPlugin extends JavaPlugin {
 
     private PacketInterceptorAssigner packetInterceptorAssigner;
+    private HookRegistry hookRegistry;
     private ChairHandler chairHandler;
     private ChairEntityHandler chairEntityHandler;
     private ChairDataRegistry chairDataRegistry;
@@ -31,6 +33,10 @@ public class ChairsPlugin extends JavaPlugin {
         chairHandler = new ChairHandler(getConfig());
         chairDataRegistry = new ChairDataRegistry();
 
+        //hooks
+        hookRegistry = new HookRegistry();
+        hookRegistry.setupHookManagers(this, adaptionModule);
+
         adaptionModule.getPacketInterceptorRegister(chairDataRegistry, chairEntityHandler)
                 .registerInterceptors();
     }
@@ -38,7 +44,7 @@ public class ChairsPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         registerListeners(
-                new PlayerInteractListener(chairHandler, chairEntityHandler, chairDataRegistry),
+                new PlayerInteractListener(chairHandler, hookRegistry, chairEntityHandler, chairDataRegistry),
                 new PlayerJoinListener(packetInterceptorAssigner)
         );
     }
