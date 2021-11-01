@@ -4,3 +4,4 @@ author: pixeldev
 api-version: 1.13
 description: Unnamed Team's Chairs Plugin
 name: unchairs
+softdepend: [WorldGuard]
