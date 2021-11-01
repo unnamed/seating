@@ -27,6 +27,7 @@ public class SteerVehiclePacketInterceptor
             ChairData chairData = chairDataRegistry.getRegistry(player);
 
             if (chairData != null) {
+                player.teleport(chairData.getFirstLocation());
                 chairEntityHandler.destroyChair(chairData);
                 chairDataRegistry.removeChairRegistry(player);
             }

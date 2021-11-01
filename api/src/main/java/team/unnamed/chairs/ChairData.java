@@ -11,13 +11,15 @@ public class ChairData {
 
     private final UUID ownerId;
     private final Location location;
+    private final Location firstLocation;
     private int entityId;
 
     private final EntitySpectators spectators;
 
-    private ChairData(UUID ownerId, Location location) {
+    private ChairData(UUID ownerId, Location location, Location firstLocation) {
         this.ownerId = ownerId;
         this.location = location;
+        this.firstLocation = firstLocation;
         this.spectators = new EntitySpectators();
     }
 
@@ -31,6 +33,10 @@ public class ChairData {
 
     public Location getLocation() {
         return location;
+    }
+
+    public Location getFirstLocation() {
+        return firstLocation;
     }
 
     public int getEntityId() {
@@ -57,7 +63,7 @@ public class ChairData {
     public static ChairData create(Player player, Block block) {
         Location location = block.getLocation().clone();
         location.add(0.5, -0.5, 0.5);
-        return new ChairData(player.getUniqueId(), location);
+        return new ChairData(player.getUniqueId(), location, player.getLocation());
     }
 
 }
