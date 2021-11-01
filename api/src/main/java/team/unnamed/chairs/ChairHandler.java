@@ -1,22 +1,31 @@
 package team.unnamed.chairs;
 
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 
 import java.util.List;
-import java.util.function.Predicate;
 
-public class ChairMaterialChecker implements Predicate<Material> {
+public class ChairHandler {
 
     private final FileConfiguration configuration;
 
-    public ChairMaterialChecker(FileConfiguration configuration) {
+    public ChairHandler(FileConfiguration configuration) {
         this.configuration = configuration;
     }
 
-    @Override
-    public boolean test(Material material) {
-        Object configuredStairs = configuration.get("stairs");
+    public boolean isAllowedToUse(Player player) {
+        return player.hasPermission(configuration.getString("chairs.permission"));
+    }
+
+    public boolean isWorldDenied(World world) {
+        List<String> deniedWorldNames = configuration.getStringList("chairs.denied-worlds");
+        return deniedWorldNames.contains(world.getName());
+    }
+
+    public boolean isAllowedMaterial(Material material) {
+        Object configuredStairs = configuration.get("chairs.materials");
 
         if (configuredStairs instanceof String) {
             String stairMaterialKey = (String) configuredStairs;

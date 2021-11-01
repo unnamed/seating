@@ -1,1 +1,5 @@
-stairs: "ALL"
+chairs:
+    permission: "unchairs.use"
+    materials: "ALL"
+    denied-worlds:
+        - "test"
