@@ -1,6 +1,8 @@
 package team.unnamed.chairs;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
+
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -10,13 +12,17 @@ import java.util.UUID;
 public class ChairDataRegistry {
 
     private final Map<UUID, ChairData> registry;
+    private final Map<String, UUID> chairsByLocation;
 
     public ChairDataRegistry() {
         this.registry = new HashMap<>();
+        this.chairsByLocation = new HashMap<>();
     }
 
     public void addChairRegistry(Player player, ChairData chairData) {
-        registry.put(player.getUniqueId(), chairData);
+        UUID uuid = player.getUniqueId();
+        registry.put(uuid, chairData);
+        chairsByLocation.put(serializeLocation(chairData.getLocation()), uuid);
     }
 
     public @Nullable ChairData getRegistry(Player player) {
@@ -24,7 +30,19 @@ public class ChairDataRegistry {
     }
 
     public void removeChairRegistry(Player player) {
-        registry.remove(player.getUniqueId());
+        ChairData chairData = registry.remove(player.getUniqueId());
+
+        if (chairData != null) {
+            chairsByLocation.remove(serializeLocation(chairData.getLocation()));
+        }
+    }
+
+    public boolean isAlreadyUsed(Location location) {
+        return chairsByLocation.containsKey(serializeLocation(location));
+    }
+
+    private String serializeLocation(Location location) {
+        return location.getBlockX() + ";" + location.getBlockY() + ";" + location.getBlockZ();
     }
 
 }
