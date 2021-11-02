@@ -1,5 +1,6 @@
 package team.unnamed.chairs.listener;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -44,14 +45,15 @@ public class PlayerInteractListener implements Listener {
         }
 
         Player player = event.getPlayer();
+        Location blockLocation = block.getLocation();
 
         if (chairHandler.isAllowedToUse(player)) {
-            if (hookRegistry.isAvailableToSeat(block.getLocation(), player)) {
-                if (chairHandler.isWorldDenied(block.getWorld())) {
+            if (hookRegistry.isAvailableToSeat(blockLocation, player)) {
+                if (chairHandler.isWorldDenied(blockLocation.getWorld())) {
                     return;
                 }
 
-                if (chairDataRegistry.isAlreadyUsed(block.getLocation())) {
+                if (chairDataRegistry.isAlreadyUsed(blockLocation)) {
                     return;
                 }
 
