@@ -1,15 +1,11 @@
 package team.unnamed.chairs.adapt;
 
-import org.bukkit.Bukkit;
+import static team.unnamed.bukkit.ServerVersionUtils.SERVER_VERSION;
 
 public class AdaptionModuleFactory {
 
-    private static final String VERSION = Bukkit.getServer().getClass()
-            .getName()
-            .split("\\.")[3].substring(1);
-
     private static final String CLASS_NAME = AdaptionModuleFactory.class.getPackage().getName()
-            + ".v" + VERSION + ".AdaptionModule" + VERSION;
+            + ".v" + SERVER_VERSION + ".AdaptionModule" + SERVER_VERSION;
 
     private AdaptionModuleFactory() {
         throw new UnsupportedOperationException();
