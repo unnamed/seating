@@ -2,6 +2,7 @@ package team.unnamed.chairs;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -62,7 +63,15 @@ public class ChairData {
 
     public static ChairData create(Player player, Block block) {
         Location location = block.getLocation().clone();
-        location.add(0.5, -0.5, 0.5);
+        double incrementY = -0.5;
+
+        if (block.getType() == Material.STEP) {
+            incrementY = -1.25;
+        } else if (block.getType() == Material.CARPET) {
+            incrementY = -1.5;
+        }
+
+        location.add(0.5, incrementY, 0.5);
         return new ChairData(player.getUniqueId(), location, player.getLocation());
     }
 
