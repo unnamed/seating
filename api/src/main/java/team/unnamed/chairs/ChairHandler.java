@@ -7,6 +7,8 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
+import static team.unnamed.bukkit.ServerVersionUtils.SERVER_VERSION_INT;
+
 public class ChairHandler {
 
     private final FileConfiguration configuration;
@@ -26,14 +28,22 @@ public class ChairHandler {
 
     public boolean isAllowedMaterial(Material material) {
         Object configuredStairs = configuration.get("chairs.materials");
+        String materialName = material.name();
 
         if (configuredStairs instanceof String) {
             String stairMaterialKey = (String) configuredStairs;
 
             if (stairMaterialKey.equals("ALL")) {
-                return material.name().contains("STAIRS")
-                        || material == Material.CARPET
-                        || material == Material.STEP;
+                boolean isStair = materialName.contains("STAIRS");
+
+                if (SERVER_VERSION_INT < 13) {
+                    return isStair || material == Material.STEP
+                            || material == Material.WOOD_STEP
+                            || material == Material.CARPET;
+                } else {
+                    return isStair || materialName.contains("SLAB")
+                            || materialName.contains("CARPET");
+                }
             } else {
                 Material stairMaterial = Material.matchMaterial(stairMaterialKey);
 
@@ -46,7 +56,6 @@ public class ChairHandler {
         } else if (configuredStairs instanceof List) {
             @SuppressWarnings("unchecked") List<String> stairsMaterialKeys =
                     (List<String>) configuredStairs;
-            String materialName = material.name();
 
             for (String stairMaterialKey : stairsMaterialKeys) {
                 if (materialName.contains(stairMaterialKey)) {
