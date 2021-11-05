@@ -8,6 +8,8 @@ public interface ChairEntityHandler {
 
     void showChairMount(ChairData chairData, Player player);
 
+    void updateChairYaw(ChairData chairData);
+
     void assignArmorStand(ChairData chairData);
 
     void destroyChair(ChairData chairData);

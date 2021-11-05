@@ -43,6 +43,11 @@ public class ChairsPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        getServer().getScheduler().runTaskTimer(
+                this, new ChairYawUpdaterRunnable(chairDataRegistry, chairEntityHandler),
+                0, 10
+        );
+
         registerListeners(
                 new PlayerInteractListener(chairHandler, hookRegistry, chairEntityHandler, chairDataRegistry),
                 new PlayerJoinListener(packetInterceptorAssigner)
