@@ -60,7 +60,10 @@ public class PlayerInteractListener implements Listener {
                 Material type = block.getType();
 
                 if (chairHandler.isAllowedMaterial(type)) {
-                    ChairData chairData = ChairData.create(player, block);
+                    ChairData chairData = ChairData.create(
+                            player, type,
+                            chairEntityHandler.calculateBaseLocation(player, block)
+                    );
 
                     chairEntityHandler.assignArmorStand(chairData);
                     chairDataRegistry.addChairRegistry(player, chairData);
