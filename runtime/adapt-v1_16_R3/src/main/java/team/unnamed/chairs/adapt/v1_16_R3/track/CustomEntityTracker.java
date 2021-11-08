@@ -19,7 +19,7 @@ public class CustomEntityTracker extends PlayerChunkMap.EntityTracker {
     }
 
     public CustomEntityTracker(PlayerChunkMap chunkMap, Entity entity) {
-        chunkMap.super(entity, 4, 1, false);
+        chunkMap.super(entity, 48, 1, false);
     }
 
 }
