@@ -1,10 +1,13 @@
 package team.unnamed.chairs.adapt.v1_8_R3.track;
 
 import net.minecraft.server.v1_8_R3.Entity;
+import net.minecraft.server.v1_8_R3.EntityHuman;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import net.minecraft.server.v1_8_R3.EntityTrackerEntry;
 
 import org.bukkit.Location;
+
+import java.util.List;
 
 public abstract class AbstractEntityTrackerEntry
         extends EntityTrackerEntry {
@@ -35,6 +38,11 @@ public abstract class AbstractEntityTrackerEntry
         } else {
             trackedPlayers.add(player);
         }
+    }
+
+    @Override
+    public void track(List<EntityHuman> list) {
+        entityTick();
     }
 
     @Override
@@ -72,6 +80,8 @@ public abstract class AbstractEntityTrackerEntry
     }
 
     protected abstract Location getLocation();
+
+    protected abstract void entityTick();
 
     protected abstract void show(EntityPlayer player);
 

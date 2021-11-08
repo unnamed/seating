@@ -1,6 +1,7 @@
 package team.unnamed.chairs.adapt.v1_8_R3.chair;
 
 import net.minecraft.server.v1_8_R3.EntityPlayer;
+import net.minecraft.server.v1_8_R3.PacketPlayOutEntity;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -12,6 +13,7 @@ public class ChairEntityTrackerEntry
         extends AbstractEntityTrackerEntry {
 
     private final ChairData chairData;
+    private byte lastYaw;
 
     public ChairEntityTrackerEntry(ChairData chairData) {
         this.chairData = chairData;
@@ -20,6 +22,29 @@ public class ChairEntityTrackerEntry
     @Override
     protected Location getLocation() {
         return chairData.getLocation();
+    }
+
+    @Override
+    protected void entityTick() {
+        Player owner = chairData.getOwner();
+
+        byte yaw = (byte) (owner.getLocation().getYaw() * 256.0F / 360.0F);
+
+        if (yaw == lastYaw) {
+            return;
+        }
+
+        lastYaw = yaw;
+
+        PacketPlayOutEntity.PacketPlayOutEntityLook entityLookPacket =
+                new PacketPlayOutEntity.PacketPlayOutEntityLook(
+                        chairData.getEntityId(),
+                        yaw, (byte) 0, false
+                );
+
+        for (EntityPlayer entityPlayer : trackedPlayers) {
+            entityPlayer.playerConnection.sendPacket(entityLookPacket);
+        }
     }
 
     @Override
