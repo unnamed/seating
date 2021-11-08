@@ -20,11 +20,11 @@ public class EntityTrackerRegistry {
         EntityTrackerAccessor.addEntry(
                 chairData.getLocation().getWorld(), entry
         );
-        entries.put(chairData.getOwnerId(), entry);
+        entries.put(chairData.getOwnerReference(), entry);
     }
 
     public void unbindEntry(ChairData chairData) {
-        EntityTrackerEntry entry = entries.remove(chairData.getOwnerId());
+        EntityTrackerEntry entry = entries.remove(chairData.getOwnerReference());
 
         if (entry == null) {
             return;
