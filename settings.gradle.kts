@@ -5,7 +5,7 @@ arrayOf("plugin", "api", "runtime").forEach {
 }
 
 arrayOf(
-    "1_8_R3"
+    "1_8_R3", "1_16_R3"
 ).forEach {
     include(":runtime:adapt-v$it")
 }
