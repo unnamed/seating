@@ -10,6 +10,7 @@ import team.unnamed.chairs.adapt.AdaptionModuleFactory;
 import team.unnamed.chairs.adapt.entity.ChairEntityHandler;
 import team.unnamed.chairs.adapt.hook.HookRegistry;
 import team.unnamed.chairs.adapt.intercept.PacketInterceptorAssigner;
+import team.unnamed.chairs.listener.PlayerDismountFakeEntityListener;
 import team.unnamed.chairs.listener.PlayerInteractListener;
 import team.unnamed.chairs.listener.PlayerJoinListener;
 
@@ -37,20 +38,15 @@ public class ChairsPlugin extends JavaPlugin {
         hookRegistry = new HookRegistry();
         hookRegistry.setupHookManagers(this, adaptionModule);
 
-        adaptionModule.getPacketInterceptorRegister(chairDataRegistry, chairEntityHandler)
-                .registerInterceptors();
+        adaptionModule.getPacketInterceptorRegister().registerInterceptors(this);
     }
 
     @Override
     public void onEnable() {
-        getServer().getScheduler().runTaskTimer(
-                this, new ChairYawUpdaterRunnable(chairDataRegistry, chairEntityHandler),
-                0, 10
-        );
-
         registerListeners(
                 new PlayerInteractListener(chairHandler, hookRegistry, chairEntityHandler, chairDataRegistry),
-                new PlayerJoinListener(packetInterceptorAssigner)
+                new PlayerJoinListener(packetInterceptorAssigner),
+                new PlayerDismountFakeEntityListener(chairEntityHandler, chairDataRegistry)
         );
     }
 
