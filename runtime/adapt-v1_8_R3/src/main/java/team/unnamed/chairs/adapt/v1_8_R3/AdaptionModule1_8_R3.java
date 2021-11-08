@@ -1,6 +1,5 @@
 package team.unnamed.chairs.adapt.v1_8_R3;
 
-import team.unnamed.chairs.ChairDataRegistry;
 import team.unnamed.chairs.adapt.AdaptionModule;
 import team.unnamed.chairs.adapt.entity.ChairEntityHandler;
 import team.unnamed.chairs.adapt.hook.HookManager;
@@ -24,9 +23,8 @@ public class AdaptionModule1_8_R3 implements AdaptionModule {
     }
 
     @Override
-    public PacketInterceptorRegister getPacketInterceptorRegister(ChairDataRegistry chairDataRegistry,
-                                                                  ChairEntityHandler chairEntityHandler) {
-        return new PacketInterceptorRegister1_8_R3(chairDataRegistry, chairEntityHandler);
+    public PacketInterceptorRegister getPacketInterceptorRegister() {
+        return new PacketInterceptorRegister1_8_R3();
     }
 
     @Override

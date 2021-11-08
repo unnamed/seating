@@ -12,8 +12,7 @@ public interface AdaptionModule {
 
     HookManager getWorldGuardHookManager();
 
-    PacketInterceptorRegister getPacketInterceptorRegister(ChairDataRegistry chairDataRegistry,
-                                                           ChairEntityHandler chairEntityHandler);
+    PacketInterceptorRegister getPacketInterceptorRegister();
 
     PacketInterceptorAssigner getPacketInterceptorAssigner();
 
