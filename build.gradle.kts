@@ -16,6 +16,7 @@ subprojects {
         maven("https://repo.unnamed.team/repository/unnamed-public/")
         maven("https://repo.codemc.io/repository/nms/")
         maven("https://maven.enginehub.org/repo/")
+        maven("https://repo.viaversion.com")
         mavenCentral()
     }
 }
