@@ -1,6 +1,5 @@
 package team.unnamed.chairs.adapt.v1_17_R1.chair;
 
-import net.minecraft.network.protocol.game.PacketPlayOutAttachEntity;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityDestroy;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityMetadata;
 import net.minecraft.network.protocol.game.PacketPlayOutMount;
@@ -12,13 +11,10 @@ import net.minecraft.world.entity.decoration.EntityArmorStand;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import team.unnamed.chairs.ChairData;
 
 import static team.unnamed.chairs.adapt.entity.ChairHeightConstants.CARPET_HEIGHT;
 import static team.unnamed.chairs.adapt.entity.ChairHeightConstants.SLAB_AND_STAIRS_HEIGHT;
-
-;
 
 public final class ChairUtils {
 
@@ -79,7 +75,7 @@ public final class ChairUtils {
         ));
 
         playerConnection.sendPacket(new PacketPlayOutMount(new PacketMountSerializer(
-                armorStand.getId(), spectator.getId()
+                armorStand.getId(), chairData.getOwner().getEntityId()
         )));
     }
 
