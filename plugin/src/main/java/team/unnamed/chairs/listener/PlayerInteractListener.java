@@ -1,5 +1,6 @@
 package team.unnamed.chairs.listener;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -14,6 +15,7 @@ import team.unnamed.chairs.ChairDataRegistry;
 import team.unnamed.chairs.ChairHandler;
 import team.unnamed.chairs.adapt.entity.ChairEntityHandler;
 import team.unnamed.chairs.adapt.hook.HookRegistry;
+import team.unnamed.chairs.event.PlayerMountChairEvent;
 
 public class PlayerInteractListener implements Listener {
 
@@ -71,6 +73,16 @@ public class PlayerInteractListener implements Listener {
                             player, type,
                             chairEntityHandler.calculateBaseLocation(player, block)
                     );
+
+                    PlayerMountChairEvent mountChairEvent = new PlayerMountChairEvent(
+                            player, chairData
+                    );
+
+                    Bukkit.getPluginManager().callEvent(mountChairEvent);
+
+                    if (mountChairEvent.isCancelled()) {
+                        return;
+                    }
 
                     chairEntityHandler.assignArmorStand(chairData);
                     chairDataRegistry.addChairRegistry(player, chairData);
