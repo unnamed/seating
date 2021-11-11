@@ -57,6 +57,13 @@ public class PlayerInteractListener implements Listener {
                     return;
                 }
 
+                ChairData currentChairData = chairDataRegistry.getRegistry(player);
+
+                if (currentChairData != null) {
+                    chairEntityHandler.destroyChair(currentChairData);
+                    chairDataRegistry.removeChairRegistry(player);
+                }
+
                 Material type = block.getType();
 
                 if (chairHandler.isAllowedMaterial(type)) {
