@@ -2,10 +2,8 @@ package team.unnamed.chairs.adapt.v1_8_R3.chair;
 
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntity;
-
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-
 import team.unnamed.chairs.ChairData;
 import team.unnamed.chairs.adapt.v1_8_R3.track.AbstractEntityTrackerEntry;
 
@@ -49,13 +47,12 @@ public class ChairEntityTrackerEntry
 
     @Override
     protected void show(EntityPlayer player) {
-        Player spectator = player.getBukkitEntity();
-        ChairUtils.spawn(chairData, spectator);
+        ChairUtils.spawn(chairData, player);
     }
 
     @Override
     protected void hide(EntityPlayer player) {
-        ChairUtils.destroy(chairData, player.getBukkitEntity());
+        ChairUtils.destroy(chairData, player);
     }
 
 }

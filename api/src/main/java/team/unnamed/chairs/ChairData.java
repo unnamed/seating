@@ -15,15 +15,12 @@ public class ChairData {
     private final Location firstLocation;
     private int entityId;
 
-    private final EntitySpectators spectators;
-
     private ChairData(Player owner, Material blockType,
                       Location location, Location firstLocation) {
         this.ownerReference = new WeakReference<>(owner);
         this.blockType = blockType;
         this.location = location;
         this.firstLocation = firstLocation;
-        this.spectators = new EntitySpectators();
     }
 
     public Player getOwner() {
@@ -52,10 +49,6 @@ public class ChairData {
 
     public Material getBlockType() {
         return blockType;
-    }
-
-    public EntitySpectators getSpectators() {
-        return spectators;
     }
 
     @Override

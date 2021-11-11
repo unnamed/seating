@@ -50,12 +50,12 @@ public class ChairEntityTrackerEntry extends AbstractEntityTrackerEntry {
 
     @Override
     protected void show(EntityPlayer player) {
-        ChairUtils.spawn(chairData, player.getBukkitEntity());
+        ChairUtils.spawn(chairData, player);
     }
 
     @Override
     protected void hide(EntityPlayer player) {
-        ChairUtils.destroy(chairData, player.getBukkitEntity());
+        ChairUtils.destroy(chairData, player);
     }
 
 }
