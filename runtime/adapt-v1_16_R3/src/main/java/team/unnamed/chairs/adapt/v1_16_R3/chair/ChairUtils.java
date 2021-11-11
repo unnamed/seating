@@ -4,8 +4,9 @@ import net.minecraft.server.v1_16_R3.*;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
-import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import team.unnamed.chairs.ChairData;
+
+import java.io.IOException;
 
 import static team.unnamed.chairs.adapt.entity.ChairHeightConstants.CARPET_HEIGHT;
 import static team.unnamed.chairs.adapt.entity.ChairHeightConstants.SLAB_AND_STAIRS_HEIGHT;
@@ -68,8 +69,16 @@ public final class ChairUtils {
                 armorStand.getId(), armorStand.getDataWatcher(), false
         ));
 
-        armorStand.passengers.add(((CraftPlayer) chairData.getOwner()).getHandle());
-        playerConnection.sendPacket(new PacketPlayOutMount(armorStand));
+        PacketPlayOutMount packetPlayOutMount = new PacketPlayOutMount();
+
+        try {
+            packetPlayOutMount.a(new PacketMountSerializer(
+                    armorStand.getId(), chairData.getOwner().getEntityId()
+            ));
+        } catch (IOException ignored) {
+        }
+
+        playerConnection.sendPacket(packetPlayOutMount);
     }
 
 }
