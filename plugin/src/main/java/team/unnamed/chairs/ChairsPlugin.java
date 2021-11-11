@@ -13,6 +13,7 @@ import team.unnamed.chairs.adapt.intercept.PacketInterceptorAssigner;
 import team.unnamed.chairs.listener.PlayerDismountFakeEntityListener;
 import team.unnamed.chairs.listener.PlayerInteractListener;
 import team.unnamed.chairs.listener.PlayerJoinListener;
+import team.unnamed.chairs.listener.PlayerLeaveListener;
 
 public class ChairsPlugin extends JavaPlugin {
 
@@ -46,7 +47,8 @@ public class ChairsPlugin extends JavaPlugin {
         registerListeners(
                 new PlayerInteractListener(chairHandler, hookRegistry, chairEntityHandler, chairDataRegistry),
                 new PlayerJoinListener(packetInterceptorAssigner),
-                new PlayerDismountFakeEntityListener(chairEntityHandler, chairDataRegistry)
+                new PlayerDismountFakeEntityListener(chairEntityHandler, chairDataRegistry),
+                new PlayerLeaveListener(chairDataRegistry, chairEntityHandler)
         );
     }
 
