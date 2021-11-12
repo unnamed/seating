@@ -8,19 +8,17 @@ dependencies {
 }
 
 tasks {
-    processResources {
+    register<Jar>("jar16") {
         filesMatching("**/*.yml") {
             filter<org.apache.tools.ant.filters.ReplaceTokens>(
                 "tokens" to mapOf("version" to project.version)
             )
         }
-    }
 
-    register<Jar>("jar16") {
         description = "Builds this project using Java 16"
         archiveClassifier.set("all-java16")
+        from(project.sourceSets.main.get().output)
         from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
-        from(file("src/main/resources").listFiles())
 
         java {
             toolchain {
@@ -31,10 +29,16 @@ tasks {
     }
 
     register<Jar>("jar8") {
+        filesMatching("**/*.yml") {
+            filter<org.apache.tools.ant.filters.ReplaceTokens>(
+                "tokens" to mapOf("version" to project.version)
+            )
+        }
+
         description = "Builds this project using Java 8"
         archiveClassifier.set("all-java8")
+        from(project.sourceSets.main.get().output)
         from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
-        from(file("src/main/resources").listFiles())
 
         java {
             toolchain {
