@@ -1,3 +1,7 @@
+plugins {
+    id("com.github.johnrengelman.shadow") version("7.0.0")
+}
+
 dependencies {
     api(project(":runtime"))
     compileOnly("org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT")
@@ -8,43 +12,11 @@ dependencies {
 }
 
 tasks {
-    register<Jar>("jar16") {
+    processResources {
         filesMatching("**/*.yml") {
             filter<org.apache.tools.ant.filters.ReplaceTokens>(
                 "tokens" to mapOf("version" to project.version)
             )
-        }
-
-        description = "Builds this project using Java 16"
-        archiveClassifier.set("all-java16")
-        from(project.sourceSets.main.get().output)
-        from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
-
-        java {
-            toolchain {
-                // use java 16 in this case
-                languageVersion.set(JavaLanguageVersion.of(16))
-            }
-        }
-    }
-
-    register<Jar>("jar8") {
-        filesMatching("**/*.yml") {
-            filter<org.apache.tools.ant.filters.ReplaceTokens>(
-                "tokens" to mapOf("version" to project.version)
-            )
-        }
-
-        description = "Builds this project using Java 8"
-        archiveClassifier.set("all-java8")
-        from(project.sourceSets.main.get().output)
-        from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
-
-        java {
-            toolchain {
-                // use java 8 in this case
-                languageVersion.set(JavaLanguageVersion.of(8))
-            }
         }
     }
 }
