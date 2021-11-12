@@ -68,9 +68,9 @@ public final class ChairUtils {
             }
         } else {
             if (material == Material.CARPET) {
-                incrementY = CARPET_HEIGHT;
+                incrementY = LEGACY_CARPET_HEIGHT;
             } else {
-                incrementY = SLAB_AND_STAIRS_HEIGHT;
+                incrementY = LEGACY_SLAB_AND_STAIRS_HEIGHT;
             }
         }
 
