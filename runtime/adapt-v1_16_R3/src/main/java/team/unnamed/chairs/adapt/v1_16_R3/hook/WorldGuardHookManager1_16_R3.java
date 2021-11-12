@@ -21,9 +21,9 @@ public class WorldGuardHookManager1_16_R3
     public void setup(Plugin plugin) {
         FlagRegistry flagRegistry = WorldGuard.getInstance().getFlagRegistry();
 
-        Flag<?> registeredFlag = flagRegistry.get("allow-chairs");
+        Flag<?> registeredFlag = flagRegistry.get(WORLDGUARD_FLAG);
         if (registeredFlag == null) {
-            chairFlag = new StateFlag("allow-chairs", true);
+            chairFlag = new StateFlag(WORLDGUARD_FLAG, true);
             flagRegistry.register(chairFlag);
         } else {
             chairFlag = (StateFlag) registeredFlag;
