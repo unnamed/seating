@@ -1,4 +1,4 @@
-<p align="center"><img src="assets/logo.svg" alt="logo" height="150" width="150"></p>
+<p align="center"><img src=".github/logo.svg" alt="logo" height="150" width="150"></p>
 <h1 align="center">
 Chairs
 <p>
