@@ -3,16 +3,16 @@ plugins {
 }
 
 dependencies {
-    api(project(":runtime"))
+    api(project(":adapt"))
     compileOnly("org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT")
 
     if (project.property("java") == "16") {
         arrayOf("1_17_R1").forEach {
-            runtimeOnly(project(":runtime:adapt-v$it"))
+            runtimeOnly(project(":adapt:adapt-v$it"))
         }
     } else {
         arrayOf("1_16_R3", "1_8_R3").forEach {
-            runtimeOnly(project(":runtime:adapt-v$it"))
+            runtimeOnly(project(":adapt:adapt-v$it"))
         }
     }
 }
