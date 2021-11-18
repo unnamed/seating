@@ -1,4 +1,4 @@
-rootProject.name = "chairs"
+rootProject.name = "seating"
 
 arrayOf("plugin", "api", "adapt").forEach {
     include(it)

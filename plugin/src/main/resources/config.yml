@@ -1,10 +1,10 @@
-chairs:
-    # Permission which player need to have to use a chair
-    permission: "unchairs.use"
-    # Materials which are supported as chairs
+seating:
+    # Permission which player need to have to use a seat
+    permission: "unseating.use"
+    # Materials which are supported as seats
     # If you want all supported materials (slabs, stairs & carpets) just
     # set this value to "ALL"
     materials: "ALL"
-    # Worlds where chairs cannot be used
+    # Worlds where seats cannot be used
     denied-worlds:
         - "test"

@@ -1,7 +1,7 @@
-main: team.unnamed.chairs.ChairsPlugin
+main: team.unnamed.seating.SeatingPlugin
 version: @version@
 author: UnnamedTeam
 api-version: 1.13
-description: Unnamed Team's Chairs Plugin
-name: unchairs
+description: Unnamed Team's Seating Plugin
+name: unseating
 softdepend: [WorldGuard, ViaVersion]
