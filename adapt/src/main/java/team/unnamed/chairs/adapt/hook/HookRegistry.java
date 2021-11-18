@@ -1,7 +1,7 @@
 package team.unnamed.chairs.adapt.hook;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -30,18 +30,10 @@ public class HookRegistry {
     }
 
     public void setupHookManagers(Plugin plugin, AdaptionModule adaptionModule) {
-        ConfigurationSection hookSection = plugin.getConfig().getConfigurationSection("hook");
-
-        if (hookSection == null) {
-            return;
-        }
-
-        for (String hookManagerKey : hookSection.getKeys(false)) { //possibly add more hooks.
-            if (hookSection.getBoolean(hookManagerKey)) {
-                HookManager hookManager = adaptionModule.getWorldGuardHookManager();
-                hookManager.setup(plugin);
-                addHookManager(hookManager); //temporally just worldguard
-            }
+        if (Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
+            HookManager hookManager = adaptionModule.getWorldGuardHookManager();
+            hookManager.setup(plugin);
+            addHookManager(hookManager); // temporally just worldguard
         }
     }
 
