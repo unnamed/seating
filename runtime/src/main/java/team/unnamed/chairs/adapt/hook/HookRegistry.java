@@ -30,19 +30,9 @@ public class HookRegistry {
     }
 
     public void setupHookManagers(Plugin plugin, AdaptionModule adaptionModule) {
-        ConfigurationSection hookSection = plugin.getConfig().getConfigurationSection("hook");
-
-        if (hookSection == null) {
-            return;
-        }
-
-        for (String hookManagerKey : hookSection.getKeys(false)) { //possibly add more hooks.
-            if (hookSection.getBoolean(hookManagerKey)) {
-                HookManager hookManager = adaptionModule.getWorldGuardHookManager();
-                hookManager.setup(plugin);
-                addHookManager(hookManager); //temporally just worldguard
-            }
-        }
+        HookManager hookManager = adaptionModule.getWorldGuardHookManager();
+        hookManager.setup(plugin);
+        addHookManager(hookManager); // temporally just worldguard
     }
 
 }

@@ -1,10 +1,3 @@
-# Hooks section where you can enable or disable
-hook:
-    # Will register a flag in worldguard to enable or disable
-    # chairs in a specified region
-    # Flag: unchairs     Values: allow, deny
-    worldguard: true
-
 chairs:
     # Permission which player need to have to use a chair
     permission: "unchairs.use"
