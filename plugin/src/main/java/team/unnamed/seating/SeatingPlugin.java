@@ -14,6 +14,7 @@ import team.unnamed.seating.listener.PlayerDismountFakeEntityListener;
 import team.unnamed.seating.listener.PlayerInteractListener;
 import team.unnamed.seating.listener.PlayerJoinListener;
 import team.unnamed.seating.listener.PlayerLeaveListener;
+import team.unnamed.seating.metrics.Metrics;
 
 public class SeatingPlugin extends JavaPlugin {
 
@@ -25,6 +26,10 @@ public class SeatingPlugin extends JavaPlugin {
 
     @Override
     public void onLoad() {
+
+        Metrics metrics = new Metrics(this, 13356);
+        metrics.startSubmittingIfEnabled();
+
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
 
