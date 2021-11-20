@@ -1,53 +1,37 @@
 package team.unnamed.seating;
 
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
-public class SeatingDataRegistry {
+public interface SeatingDataRegistry {
 
-    private final Map<UUID, SeatingData> registry;
-    private final Map<String, UUID> seatsByLocation;
+    Collection<SeatingData> getAllData();
 
-    public SeatingDataRegistry() {
-        this.registry = new HashMap<>();
-        this.seatsByLocation = new HashMap<>();
+    @Nullable SeatingData getRegistry(UUID playerId);
+
+    default @Nullable SeatingData getRegistry(Player player) {
+        return getRegistry(player.getUniqueId());
     }
 
-    public Collection<SeatingData> getAllSeats() {
-        return registry.values();
+    @Nullable SeatingData getRegistry(Location location);
+
+    void addRegistry(Player player, SeatingData seatingData);
+
+    void createAndAddRegistry(Player player, Block block);
+
+    @Nullable SeatingData removeRegistry(UUID playerId);
+
+    default @Nullable SeatingData removeRegistry(Player player) {
+        return removeRegistry(player.getUniqueId());
     }
 
-    public void addRegistry(Player player, SeatingData seatingData) {
-        UUID uuid = player.getUniqueId();
-        registry.put(uuid, seatingData);
-        seatsByLocation.put(serializeLocation(seatingData.getLocation()), uuid);
-    }
+    @Nullable SeatingData removeRegistry(Location location);
 
-    public @Nullable SeatingData getRegistry(Player player) {
-        return registry.get(player.getUniqueId());
-    }
-
-    public void removeRegistry(Player player) {
-        SeatingData seatingData = registry.remove(player.getUniqueId());
-
-        if (seatingData != null) {
-            seatsByLocation.remove(serializeLocation(seatingData.getLocation()));
-        }
-    }
-
-    public boolean isAlreadyUsed(Location location) {
-        return seatsByLocation.containsKey(serializeLocation(location));
-    }
-
-    private String serializeLocation(Location location) {
-        return location.getBlockX() + ";" + location.getBlockY() + ";" + location.getBlockZ();
-    }
+    boolean isLocationUsed(Location location);
 
 }
