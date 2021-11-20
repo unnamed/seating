@@ -38,8 +38,10 @@ public final class SeatUtils {
 
         if (materialName.contains("CARPET")) {
             incrementY = CARPET_HEIGHT;
-        } else {
+        } else if (materialName.contains("SLAB") || materialName.contains("STAIRS")) {
             incrementY = SLAB_AND_STAIRS_HEIGHT;
+        } else {
+            incrementY = CARPET_HEIGHT;
         }
 
         return -incrementY;
