@@ -64,7 +64,7 @@ public class SeatingEntityHandler1_16_R3 implements SeatingEntityHandler {
     }
 
     @Override
-    public void assignArmorStand(SeatingData seatingData) {
+    public void create(Player player, SeatingData seatingData) {
         int entityId = SeatUtils.generateId(seatingData);
         seatingData.setEntityId(entityId);
 
@@ -111,6 +111,11 @@ public class SeatingEntityHandler1_16_R3 implements SeatingEntityHandler {
         if (entityTracker != null) {
             entityTracker.a();
         }
+    }
+
+    @Override
+    public void testLay(Player player) {
+
     }
 
 }

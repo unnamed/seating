@@ -65,7 +65,7 @@ public class SeatingEntityHandler1_8_R3 implements SeatingEntityHandler {
     }
 
     @Override
-    public void assignArmorStand(SeatingData seatingData) {
+    public void create(Player player, SeatingData seatingData) {
         EntityTrackerEntry trackerEntry = new SeatingEntityTrackerEntry(seatingData);
         seatingData.setEntityId(SeatUtils.generateId(seatingData));
         trackerRegistry.bindEntry(seatingData, trackerEntry);
@@ -74,6 +74,11 @@ public class SeatingEntityHandler1_8_R3 implements SeatingEntityHandler {
     @Override
     public void destroy(SeatingData seatingData) {
         trackerRegistry.unbindEntry(seatingData);
+    }
+
+    @Override
+    public void testLay(Player player) {
+
     }
 
 }

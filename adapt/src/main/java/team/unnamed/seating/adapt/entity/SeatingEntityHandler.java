@@ -10,8 +10,10 @@ public interface SeatingEntityHandler {
 
     Location calculateBaseLocation(Player owner, Block block);
 
-    void assignArmorStand(SeatingData seatingData);
+    void create(Player player, SeatingData seatingData);
 
     void destroy(SeatingData seatingData);
+
+    void testLay(Player player);
 
 }
