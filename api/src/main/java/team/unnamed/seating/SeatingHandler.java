@@ -18,7 +18,7 @@ public class SeatingHandler {
     }
 
     public boolean isAllowedToUse(Player player) {
-        return player.hasPermission(configuration.getString("seating.permission"));
+        return player.hasPermission("seating.interaction");
     }
 
     public boolean isWorldDenied(World world) {
