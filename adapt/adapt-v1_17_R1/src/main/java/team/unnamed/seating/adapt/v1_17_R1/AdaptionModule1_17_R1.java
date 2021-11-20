@@ -9,12 +9,13 @@ import team.unnamed.seating.adapt.v1_17_R1.seat.SeatingEntityHandler1_17_R1;
 import team.unnamed.seating.adapt.v1_17_R1.hook.WorldGuardHookManager1_17_R1;
 import team.unnamed.seating.adapt.v1_17_R1.intercept.PacketInterceptorAssigner1_17_R1;
 import team.unnamed.seating.adapt.v1_17_R1.intercept.PacketInterceptorRegister1_17_R1;
+import team.unnamed.seating.message.MessageHandler;
 
 public class AdaptionModule1_17_R1 implements AdaptionModule {
 
     @Override
-    public SeatingEntityHandler getEntityHandler() {
-        return new SeatingEntityHandler1_17_R1();
+    public SeatingEntityHandler getEntityHandler(MessageHandler messageHandler) {
+        return new SeatingEntityHandler1_17_R1(messageHandler);
     }
 
     @Override
