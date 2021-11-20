@@ -1,6 +1,4 @@
 seating:
-    # Permission which player need to have to use a seat
-    permission: "unseating.use"
     # Materials which are supported as seats
     # If you want all supported materials (slabs, stairs & carpets) just
     # set this value to "ALL"
@@ -8,3 +6,9 @@ seating:
     # Worlds where seats cannot be used
     denied-worlds:
         - "test"
+
+messages:
+    no-permission: "&cYou don't have permission to execute command"
+    # Message which will be displayed when sit down on a block or an entity
+    # %keybind% is used to display the "shift" key
+    dismount: "&dPress &5%keybind% &dto dismount"
