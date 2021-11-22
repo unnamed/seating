@@ -9,3 +9,4 @@ insert_final_newline = false
 
 ij_continuation_indent_size = 8
 ij_java_class_count_to_use_import_on_demand = 10
+ij_java_insert_override_annotation = false
