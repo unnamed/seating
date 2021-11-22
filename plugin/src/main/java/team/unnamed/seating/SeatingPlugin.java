@@ -10,6 +10,7 @@ import team.unnamed.seating.adapt.AdaptionModule;
 import team.unnamed.seating.adapt.AdaptionModuleFactory;
 import team.unnamed.seating.adapt.entity.SeatingEntityHandler;
 import team.unnamed.seating.adapt.hook.HookRegistry;
+import team.unnamed.seating.command.CrawlCommand;
 import team.unnamed.seating.command.LayCommand;
 import team.unnamed.seating.command.SitCommand;
 import team.unnamed.seating.listener.BlockListeners;
@@ -60,6 +61,7 @@ public class SeatingPlugin extends JavaPlugin {
 
         registerCommand("sit", new SitCommand(seatingDataRegistry, messageHandler));
         registerCommand("lay", new LayCommand(seatingEntityHandler));
+        registerCommand("crawl", new CrawlCommand(messageHandler));
     }
 
     @Override
