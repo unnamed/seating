@@ -17,7 +17,7 @@ public class AdaptionModule1_16_R3 implements AdaptionModule {
 
     @Override
     public SeatingEntityHandler getEntityHandler(MessageHandler messageHandler) {
-        return new SeatingEntityHandler1_16_R3();
+        return new SeatingEntityHandler1_16_R3(messageHandler);
     }
 
     @Override

@@ -9,6 +9,7 @@ import team.unnamed.seating.adapt.AdaptionModule;
 import team.unnamed.seating.adapt.AdaptionModuleFactory;
 import team.unnamed.seating.adapt.entity.SeatingEntityHandler;
 import team.unnamed.seating.adapt.hook.HookRegistry;
+import team.unnamed.seating.command.CrawlCommand;
 import team.unnamed.seating.command.LayCommand;
 import team.unnamed.seating.command.SitCommand;
 import team.unnamed.seating.listener.*;
@@ -55,7 +56,7 @@ public class SeatingPlugin extends JavaPlugin {
         hookRegistry = new HookRegistry();
         hookRegistry.setupHookManagers(this, adaptionModule);
 
-        adaptionModule.getPacketInterceptorRegister().registerInterceptors(this);
+        adaptionModule.registerPacketInterceptors(this);
     }
 
     @Override
