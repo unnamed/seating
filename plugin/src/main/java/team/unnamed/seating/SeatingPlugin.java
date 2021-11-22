@@ -61,7 +61,7 @@ public class SeatingPlugin extends JavaPlugin {
 
         registerCommand("sit", new SitCommand(seatingDataRegistry, messageHandler));
         registerCommand("lay", new LayCommand(seatingEntityHandler));
-        registerCommand("crawl", new CrawlCommand(messageHandler));
+        registerCommand("crawl", new CrawlCommand(messageHandler, seatingEntityHandler));
     }
 
     @Override
