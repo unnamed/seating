@@ -81,4 +81,8 @@ public class SeatingEntityHandler1_8_R3 implements SeatingEntityHandler {
 
     }
 
+    @Override
+    public void crawl(Player player) {
+
+    }
 }

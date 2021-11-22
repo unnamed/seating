@@ -187,4 +187,10 @@ public class SeatingEntityHandler1_17_R1 implements SeatingEntityHandler {
                 fakePlayer.getId(), fakePlayer.getDataWatcher(), false));
     }
 
+    @Override
+    public void crawl(Player player) {
+        // this can't be this simple (testing required)
+        player.setSwimming(!player.isSwimming());
+    }
+
 }
