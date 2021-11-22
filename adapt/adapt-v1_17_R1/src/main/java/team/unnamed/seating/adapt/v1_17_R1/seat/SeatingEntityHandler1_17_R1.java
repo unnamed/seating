@@ -164,6 +164,7 @@ public class SeatingEntityHandler1_17_R1 implements SeatingEntityHandler {
                 fakePlayer.getId(), fakePlayer.getDataWatcher(), false));
     }
 
+    @Override
     public void sendDismountActionbar(Player player) {
         sendDismountActionbar(((CraftPlayer) player).getHandle());
     }
@@ -194,6 +195,7 @@ public class SeatingEntityHandler1_17_R1 implements SeatingEntityHandler {
         entityPlayer.b.sendPacket(packetPlayOutChat);
     }
 
+    @Override
     public void crawl(Player player) {
         // this can't be this simple (testing required)
         player.setSwimming(!player.isSwimming());
