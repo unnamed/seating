@@ -9,7 +9,6 @@ import team.unnamed.seating.adapt.AdaptionModule;
 import team.unnamed.seating.adapt.AdaptionModuleFactory;
 import team.unnamed.seating.adapt.entity.SeatingEntityHandler;
 import team.unnamed.seating.adapt.hook.HookRegistry;
-import team.unnamed.seating.adapt.intercept.PacketInterceptorAssigner;
 import team.unnamed.seating.command.LayCommand;
 import team.unnamed.seating.command.SitCommand;
 import team.unnamed.seating.listener.*;
@@ -22,19 +21,20 @@ import java.io.IOException;
 public class SeatingPlugin extends JavaPlugin {
 
     private MessageHandler messageHandler;
-    private PacketInterceptorAssigner packetInterceptorAssigner;
+    private AdaptionModule adaptionModule;
+    private UserManager userManager;
     private HookRegistry hookRegistry;
     private SeatingHandler seatingHandler;
     private SeatingEntityHandler seatingEntityHandler;
     private SeatingDataRegistry seatingDataRegistry;
-    private UserManager userManager;
 
     @Override
     public void onLoad() {
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
 
-        AdaptionModule adaptionModule;
+        messageHandler = new MessageHandler(getConfig());
+
         userManager = new SimpleUserManager();
 
         try {
@@ -46,9 +46,6 @@ public class SeatingPlugin extends JavaPlugin {
             return;
         }
 
-        messageHandler = new MessageHandler(getConfig());
-
-        packetInterceptorAssigner = adaptionModule.getPacketInterceptorAssigner();
         seatingEntityHandler = adaptionModule.getEntityHandler(messageHandler);
 
         seatingHandler = new SeatingHandler(getConfig());
@@ -65,16 +62,15 @@ public class SeatingPlugin extends JavaPlugin {
     public void onEnable() {
         registerListeners(
                 new PlayerInteractListener(seatingHandler, hookRegistry, seatingDataRegistry),
-                new PlayerJoinListener(packetInterceptorAssigner),
+                new PlayerJoinListener(this, adaptionModule),
                 new PlayerDismountFakeEntityListener(seatingDataRegistry),
                 new PlayerLeaveListener(seatingDataRegistry),
                 new BlockListeners(seatingDataRegistry)
         );
 
-        registerCommands(
-                "sit", new SitCommand(seatingDataRegistry, messageHandler),
-                "lay", new LayCommand(seatingEntityHandler)
-        );
+        registerCommand("sit", new SitCommand(seatingDataRegistry, messageHandler));
+        registerCommand("lay", new LayCommand(seatingEntityHandler));
+        registerCommand("crawl", new CrawlCommand(messageHandler, seatingEntityHandler));
     }
 
     @Override
@@ -86,13 +82,8 @@ public class SeatingPlugin extends JavaPlugin {
         }
     }
 
-    private void registerCommands(Object... commands) {
-        for (int i = 0; i < commands.length; i += 2) {
-            String name = (String) commands[i];
-            CommandExecutor commandExecutor = (CommandExecutor) commands[i + 1];
-
-            getCommand(name).setExecutor(commandExecutor);
-        }
+    private void registerCommand(String name, CommandExecutor executor) {
+        getCommand(name).setExecutor(executor);
     }
 
     private void registerListeners(Listener... listeners) {

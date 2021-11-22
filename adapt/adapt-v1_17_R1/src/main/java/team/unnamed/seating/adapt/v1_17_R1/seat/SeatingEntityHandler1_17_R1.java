@@ -1,5 +1,4 @@
 package team.unnamed.seating.adapt.v1_17_R1.seat;
-
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.PropertyMap;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -165,7 +164,6 @@ public class SeatingEntityHandler1_17_R1 implements SeatingEntityHandler {
                 fakePlayer.getId(), fakePlayer.getDataWatcher(), false));
     }
 
-    @Override
     public void sendDismountActionbar(Player player) {
         sendDismountActionbar(((CraftPlayer) player).getHandle());
     }
@@ -194,6 +192,11 @@ public class SeatingEntityHandler1_17_R1 implements SeatingEntityHandler {
                 null, ChatMessageType.c, entityPlayer.getUniqueID());
         packetPlayOutChat.components = new BaseComponent[]{baseComponent};
         entityPlayer.b.sendPacket(packetPlayOutChat);
+    }
+
+    public void crawl(Player player) {
+        // this can't be this simple (testing required)
+        player.setSwimming(!player.isSwimming());
     }
 
 }

@@ -10,3 +10,5 @@ commands:
         description: Use the block below as a seat
     lay:
         description: Lay
+    crawl:
+        description: Crawl

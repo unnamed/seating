@@ -8,6 +8,7 @@ import net.minecraft.server.v1_16_R3.EntityPlayer;
 import net.minecraft.server.v1_16_R3.PacketPlayOutChat;
 import net.minecraft.server.v1_16_R3.PlayerChunkMap;
 import net.minecraft.server.v1_16_R3.WorldServer;
+
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -16,6 +17,7 @@ import org.bukkit.block.data.type.Stairs;
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+
 import team.unnamed.seating.SeatingData;
 import team.unnamed.seating.adapt.entity.SeatingEntityHandler;
 import team.unnamed.seating.adapt.v1_16_R3.track.CustomEntityTracker;
@@ -159,6 +161,10 @@ public class SeatingEntityHandler1_16_R3 implements SeatingEntityHandler {
                 null, ChatMessageType.GAME_INFO, entityPlayer.getUniqueID());
         packetPlayOutChat.components = new BaseComponent[]{baseComponent};
         entityPlayer.playerConnection.sendPacket(packetPlayOutChat);
+    }
+
+    public void crawl(Player player) {
+
     }
 
 }

@@ -18,4 +18,6 @@ public interface SeatingEntityHandler {
 
     void testLay(Player player);
 
+    void crawl(Player player);
+
 }
