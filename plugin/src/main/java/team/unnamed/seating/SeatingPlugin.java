@@ -60,10 +60,8 @@ public class SeatingPlugin extends JavaPlugin {
                 new BlockListeners(seatingDataRegistry)
         );
 
-        registerCommands(
-                "sit", new SitCommand(seatingDataRegistry, messageHandler),
-                "lay", new LayCommand(seatingEntityHandler)
-        );
+        registerCommand("sit", new SitCommand(seatingDataRegistry, messageHandler));
+        registerCommand("lay", new LayCommand(seatingEntityHandler));
     }
 
     @Override
@@ -71,13 +69,8 @@ public class SeatingPlugin extends JavaPlugin {
 
     }
 
-    private void registerCommands(Object... commands) {
-        for (int i = 0; i < commands.length; i += 2) {
-            String name = (String) commands[i];
-            CommandExecutor commandExecutor = (CommandExecutor) commands[i + 1];
-
-            getCommand(name).setExecutor(commandExecutor);
-        }
+    private void registerCommand(String name, CommandExecutor executor) {
+        getCommand(name).setExecutor(executor);
     }
 
     private void registerListeners(Listener... listeners) {
