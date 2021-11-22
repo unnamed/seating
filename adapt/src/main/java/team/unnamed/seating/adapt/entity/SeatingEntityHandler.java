@@ -14,6 +14,8 @@ public interface SeatingEntityHandler {
 
     void destroy(SeatingData seatingData);
 
+    void sendDismountActionbar(Player player);
+
     void testLay(Player player);
 
 }

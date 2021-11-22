@@ -77,6 +77,11 @@ public class SeatingEntityHandler1_8_R3 implements SeatingEntityHandler {
     }
 
     @Override
+    public void sendDismountActionbar(Player player) {
+
+    }
+
+    @Override
     public void testLay(Player player) {
 
     }

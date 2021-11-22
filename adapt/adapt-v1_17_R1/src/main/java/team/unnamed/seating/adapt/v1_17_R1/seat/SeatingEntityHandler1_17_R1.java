@@ -1,4 +1,5 @@
 package team.unnamed.seating.adapt.v1_17_R1.seat;
+
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.PropertyMap;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -116,31 +117,8 @@ public class SeatingEntityHandler1_17_R1 implements SeatingEntityHandler {
         }
 
         EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
-        String dismountMessage = messageHandler.getMessage("dismount");
-        String[] componentKeys = dismountMessage.split("%keybind%");
-        BaseComponent baseComponent = new TextComponent();
-        BaseComponent lastComponent = null;
-
-        for (int i = 0; i < componentKeys.length; i++) {
-            if (i != 0) {
-                BaseComponent component = new KeybindComponent("key.sneak");
-                component.copyFormatting(lastComponent);
-                baseComponent.addExtra(component);
-            }
-
-            BaseComponent[] components = TextComponent.fromLegacyText(componentKeys[i]);
-            lastComponent = components[components.length - 1];
-            for (BaseComponent component : components) {
-                baseComponent.addExtra(component);
-            }
-        }
-
-        PacketPlayOutChat packetPlayOutChat = new PacketPlayOutChat(
-                null, ChatMessageType.c, player.getUniqueId());
-        packetPlayOutChat.components = new BaseComponent[]{baseComponent};
-
         entityTracker.updatePlayer(entityPlayer);
-        entityPlayer.b.sendPacket(packetPlayOutChat);
+        sendDismountActionbar(entityPlayer);
         chunkMap.G.put(entityId, entityTracker);
     }
 
@@ -185,6 +163,37 @@ public class SeatingEntityHandler1_17_R1 implements SeatingEntityHandler {
         fakePlayer.setPose(EntityPose.c);
         playerConnection.sendPacket(new PacketPlayOutEntityMetadata(
                 fakePlayer.getId(), fakePlayer.getDataWatcher(), false));
+    }
+
+    @Override
+    public void sendDismountActionbar(Player player) {
+        sendDismountActionbar(((CraftPlayer) player).getHandle());
+    }
+
+    private void sendDismountActionbar(EntityPlayer entityPlayer) {
+        String dismountMessage = messageHandler.getMessage("dismount");
+        String[] componentKeys = dismountMessage.split("%keybind%");
+        BaseComponent baseComponent = new TextComponent();
+        BaseComponent lastComponent = null;
+
+        for (int i = 0; i < componentKeys.length; i++) {
+            if (i != 0) {
+                BaseComponent component = new KeybindComponent("key.sneak");
+                component.copyFormatting(lastComponent);
+                baseComponent.addExtra(component);
+            }
+
+            BaseComponent[] components = TextComponent.fromLegacyText(componentKeys[i]);
+            lastComponent = components[components.length - 1];
+            for (BaseComponent component : components) {
+                baseComponent.addExtra(component);
+            }
+        }
+
+        PacketPlayOutChat packetPlayOutChat = new PacketPlayOutChat(
+                null, ChatMessageType.c, entityPlayer.getUniqueID());
+        packetPlayOutChat.components = new BaseComponent[]{baseComponent};
+        entityPlayer.b.sendPacket(packetPlayOutChat);
     }
 
 }
