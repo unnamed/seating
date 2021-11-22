@@ -26,10 +26,12 @@ public class SimpleSeatingDataRegistry implements SeatingDataRegistry {
         this.seatsByLocation = new HashMap<>();
     }
 
+    @Override
     public Collection<SeatingData> getAllData() {
         return registry.values();
     }
 
+    @Override
     public void addRegistry(Player player, SeatingData seatingData) {
         entityHandler.create(player, seatingData);
 
@@ -38,10 +40,12 @@ public class SimpleSeatingDataRegistry implements SeatingDataRegistry {
         seatsByLocation.put(serializeLocation(seatingData.getLocation()), uuid);
     }
 
+    @Override
     public @Nullable SeatingData getRegistry(UUID uuid) {
         return registry.get(uuid);
     }
 
+    @Override
     public @Nullable SeatingData getRegistry(Location location) {
         return getRegistry(seatsByLocation.get(serializeLocation(location)));
     }
@@ -80,6 +84,7 @@ public class SimpleSeatingDataRegistry implements SeatingDataRegistry {
         return removeRegistry(seatsByLocation.get(serializeLocation(location)));
     }
 
+    @Override
     public boolean isLocationUsed(Location location) {
         return seatsByLocation.containsKey(serializeLocation(location));
     }
