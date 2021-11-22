@@ -47,7 +47,7 @@ public class SeatingPlugin extends JavaPlugin {
         hookRegistry = new HookRegistry();
         hookRegistry.setupHookManagers(this, adaptionModule);
 
-        adaptionModule.getPacketInterceptorRegister().registerInterceptors(this);
+        adaptionModule.registerPacketInterceptors(this);
     }
 
     @Override
