@@ -10,7 +10,6 @@ import team.unnamed.seating.adapt.AdaptionModule;
 import team.unnamed.seating.adapt.AdaptionModuleFactory;
 import team.unnamed.seating.adapt.entity.SeatingEntityHandler;
 import team.unnamed.seating.adapt.hook.HookRegistry;
-import team.unnamed.seating.adapt.intercept.PacketInterceptorAssigner;
 import team.unnamed.seating.command.LayCommand;
 import team.unnamed.seating.command.SitCommand;
 import team.unnamed.seating.listener.BlockListeners;
@@ -23,7 +22,7 @@ import team.unnamed.seating.message.MessageHandler;
 public class SeatingPlugin extends JavaPlugin {
 
     private MessageHandler messageHandler;
-    private PacketInterceptorAssigner packetInterceptorAssigner;
+    private AdaptionModule adaptionModule;
     private HookRegistry hookRegistry;
     private SeatingHandler seatingHandler;
     private SeatingEntityHandler seatingEntityHandler;
@@ -36,8 +35,7 @@ public class SeatingPlugin extends JavaPlugin {
 
         messageHandler = new MessageHandler(getConfig());
 
-        AdaptionModule adaptionModule = AdaptionModuleFactory.create();
-        packetInterceptorAssigner = adaptionModule.getPacketInterceptorAssigner();
+        adaptionModule = AdaptionModuleFactory.create();
         seatingEntityHandler = adaptionModule.getEntityHandler(messageHandler);
 
         seatingHandler = new SeatingHandler(getConfig());
@@ -54,7 +52,7 @@ public class SeatingPlugin extends JavaPlugin {
     public void onEnable() {
         registerListeners(
                 new PlayerInteractListener(seatingHandler, hookRegistry, seatingDataRegistry),
-                new PlayerJoinListener(packetInterceptorAssigner),
+                new PlayerJoinListener(this, adaptionModule),
                 new PlayerDismountFakeEntityListener(seatingDataRegistry),
                 new PlayerLeaveListener(seatingDataRegistry),
                 new BlockListeners(seatingDataRegistry)
