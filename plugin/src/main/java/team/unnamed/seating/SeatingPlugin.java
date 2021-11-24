@@ -15,7 +15,7 @@ import team.unnamed.seating.command.SitCommand;
 import team.unnamed.seating.listener.*;
 import team.unnamed.seating.message.MessageHandler;
 import team.unnamed.seating.user.SimpleUserManager;
-import team.unnamed.seating.user.UserManager;
+import team.unnamed.seating.user.UserToggleSeatingManager;
 
 import java.io.IOException;
 
@@ -23,7 +23,7 @@ public class SeatingPlugin extends JavaPlugin {
 
     private MessageHandler messageHandler;
     private AdaptionModule adaptionModule;
-    private UserManager userManager;
+    private UserToggleSeatingManager userToggleSeatingManager;
     private HookRegistry hookRegistry;
     private SeatingHandler seatingHandler;
     private SeatingEntityHandler seatingEntityHandler;
@@ -36,11 +36,11 @@ public class SeatingPlugin extends JavaPlugin {
 
         messageHandler = new MessageHandler(getConfig());
 
-        userManager = new SimpleUserManager();
+        userToggleSeatingManager = new SimpleUserManager();
 
         try {
             adaptionModule = AdaptionModuleFactory.create();
-            userManager.loadData(this);
+            userToggleSeatingManager.loadData(this);
         } catch (Exception e) {
             e.printStackTrace();
             Bukkit.getPluginManager().disablePlugin(this);
@@ -62,14 +62,14 @@ public class SeatingPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         registerListeners(
-                new PlayerInteractListener(seatingHandler, hookRegistry, seatingDataRegistry),
+                new PlayerInteractListener(seatingHandler, hookRegistry, userToggleSeatingManager, seatingDataRegistry),
                 new PlayerJoinListener(this, adaptionModule),
                 new PlayerDismountFakeEntityListener(seatingDataRegistry),
                 new PlayerLeaveListener(seatingDataRegistry),
                 new BlockListeners(seatingDataRegistry)
         );
 
-        registerCommand("sit", new SitCommand(seatingDataRegistry, messageHandler));
+        registerCommand("sit", new SitCommand(seatingDataRegistry, messageHandler, userToggleSeatingManager));
         registerCommand("lay", new LayCommand(seatingEntityHandler));
         registerCommand("crawl", new CrawlCommand(messageHandler, seatingEntityHandler));
     }
@@ -77,7 +77,7 @@ public class SeatingPlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         try {
-            userManager.saveData(this);
+            userToggleSeatingManager.saveData(this);
         } catch (IOException e) {
             e.printStackTrace();
         }

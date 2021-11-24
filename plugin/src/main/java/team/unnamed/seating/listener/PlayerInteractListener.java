@@ -12,18 +12,22 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import team.unnamed.seating.SeatingDataRegistry;
 import team.unnamed.seating.SeatingHandler;
 import team.unnamed.seating.adapt.hook.HookRegistry;
+import team.unnamed.seating.user.UserToggleSeatingManager;
 
 public class PlayerInteractListener implements Listener {
 
     private final SeatingHandler seatingHandler;
     private final HookRegistry hookRegistry;
+    private final UserToggleSeatingManager userToggleSeatingManager;
     private final SeatingDataRegistry seatingDataRegistry;
 
     public PlayerInteractListener(SeatingHandler seatingHandler,
                                   HookRegistry hookRegistry,
+                                  UserToggleSeatingManager userToggleSeatingManager,
                                   SeatingDataRegistry seatingDataRegistry) {
         this.seatingHandler = seatingHandler;
         this.hookRegistry = hookRegistry;
+        this.userToggleSeatingManager = userToggleSeatingManager;
         this.seatingDataRegistry = seatingDataRegistry;
     }
 
@@ -44,26 +48,29 @@ public class PlayerInteractListener implements Listener {
         Location blockLocation = block.getLocation();
 
         if (seatingHandler.isAllowedToUse(player)) {
-            if (player.getItemInHand().getType() != Material.AIR) {
+            if (!seatingHandler.isAllowedMaterial(type)) {
                 return;
             }
 
-            if (hookRegistry.isAvailableToSeat(blockLocation, player)) {
-                if (seatingHandler.isWorldDenied(blockLocation.getWorld())) {
+            if (userToggleSeatingManager.hasSeatingEnabled(player)) {
+                if (player.getItemInHand().getType() != Material.AIR) {
                     return;
                 }
 
-                if (block.getRelative(BlockFace.UP).getType() != Material.AIR) {
-                    return;
-                }
+                if (hookRegistry.isAvailableToSeat(blockLocation, player)) {
+                    if (seatingHandler.isWorldDenied(blockLocation.getWorld())) {
+                        return;
+                    }
 
-                if (seatingDataRegistry.isLocationUsed(blockLocation)) {
-                    return;
-                }
+                    if (block.getRelative(BlockFace.UP).getType() != Material.AIR) {
+                        return;
+                    }
 
-                seatingDataRegistry.removeRegistry(player);
+                    if (seatingDataRegistry.isLocationUsed(blockLocation)) {
+                        return;
+                    }
 
-                if (seatingHandler.isAllowedMaterial(type)) {
+                    seatingDataRegistry.removeRegistry(player);
                     seatingDataRegistry.createAndAddRegistry(player, block);
                 }
             }

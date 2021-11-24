@@ -9,26 +9,27 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
 
-public class SimpleUserManager implements UserManager {
+public class SimpleUserManager implements UserToggleSeatingManager {
 
-    private final Set<UUID> enabledSeatingUsers;
+    private final Set<UUID> disabledSeatingUsers;
 
     public SimpleUserManager() {
-        enabledSeatingUsers = new HashSet<>();
+        disabledSeatingUsers = new HashSet<>();
     }
 
     @Override
     public boolean hasSeatingEnabled(Player player) {
-        return enabledSeatingUsers.contains(player.getUniqueId());
+        return !disabledSeatingUsers.contains(player.getUniqueId());
     }
 
     @Override
     public boolean toggleSeating(Player player) {
         UUID playerId = player.getUniqueId();
-        if (enabledSeatingUsers.remove(playerId)) {
-            return false;
+        if (disabledSeatingUsers.remove(playerId)) {
+            return true;
         } else {
-            return enabledSeatingUsers.add(playerId);
+            disabledSeatingUsers.add(playerId);
+            return false;
         }
     }
 
@@ -44,7 +45,7 @@ public class SimpleUserManager implements UserManager {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                enabledSeatingUsers.add(UUID.fromString(line));
+                disabledSeatingUsers.add(UUID.fromString(line));
             }
         }
     }
@@ -54,7 +55,7 @@ public class SimpleUserManager implements UserManager {
         File file = new File(plugin.getDataFolder(), "users.txt");
         if (file.exists()) {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-                Iterator<UUID> iterator = enabledSeatingUsers.iterator();
+                Iterator<UUID> iterator = disabledSeatingUsers.iterator();
                 while (iterator.hasNext()) {
                     writer.write(iterator.next().toString());
 
