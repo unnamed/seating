@@ -1,10 +1,8 @@
 package team.unnamed.seating.adapt.hook;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-
 import team.unnamed.seating.adapt.AdaptionModule;
 
 import java.util.HashSet;
@@ -37,10 +35,14 @@ public class HookRegistry {
     }
 
     public void setupHookManagers(Plugin plugin, AdaptionModule adaptionModule) {
-        if (Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
+        try {
+            Class.forName("com.sk89q.worldguard.protection.flags.registry.FlagRegistry");
+
             HookManager hookManager = adaptionModule.getWorldGuardHookManager();
             hookManager.setup(plugin);
             addHookManager(hookManager); // temporally just worldguard
+        } catch (ClassNotFoundException ignored) {
+            // nothing should happen, it means that worldguard isn't installed
         }
     }
 
