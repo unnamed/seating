@@ -9,11 +9,11 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
 import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntityLiving;
 import net.minecraft.server.v1_8_R3.PlayerConnection;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import team.unnamed.seating.SeatingData;
+import team.unnamed.seating.data.ChairSeatingData;
+import team.unnamed.seating.data.SeatingData;
 
 import static team.unnamed.seating.adapt.entity.SeatingHeightConstants.*;
 
@@ -46,42 +46,40 @@ public final class SeatUtils {
         return armorStand.getId();
     }
 
-    public static double calculateHeight(SeatingData seatingData, EntityPlayer spectator) {
-        Material material = seatingData.getBlockType();
-        double incrementY;
-
+    public static double calculateHeight(ChairSeatingData seatingData, EntityPlayer spectator) {
+        ChairSeatingData.ChairType chairType = seatingData.getChairType();
         if (VIA_VERSION) {
             @SuppressWarnings("unchecked") ViaAPI<Player> viaAPI =
                     (ViaAPI<Player>) Via.getAPI();
-            if (viaAPI.getPlayerVersion(spectator.getUniqueID()) < 393) { //<1.13
-                if (material == Material.CARPET) {
-                    incrementY = LEGACY_CARPET_HEIGHT;
-                } else {
-                    incrementY = LEGACY_SLAB_AND_STAIRS_HEIGHT;
-                }
-            } else {
-                if (material == Material.CARPET) {
-                    incrementY = CARPET_HEIGHT;
-                } else {
-                    incrementY = SLAB_AND_STAIRS_HEIGHT;
-                }
-            }
-        } else {
-            if (material == Material.CARPET) {
-                incrementY = LEGACY_CARPET_HEIGHT;
-            } else {
-                incrementY = LEGACY_SLAB_AND_STAIRS_HEIGHT;
+            // show with another height to players with a version minor than 1.13
+            if (viaAPI.getPlayerVersion(spectator.getUniqueID()) < 393) {
+                return getDecrementY(chairType, LEGACY_SLAB_AND_STAIRS_HEIGHT, LEGACY_CARPET_HEIGHT);
             }
         }
-
-        return -incrementY;
+        return getDecrementY(chairType, SLAB_AND_STAIRS_HEIGHT, CARPET_HEIGHT);
     }
 
-    public static void destroy(SeatingData seatingData, EntityPlayer spectator) {
-        spectator.playerConnection.sendPacket(new PacketPlayOutEntityDestroy(seatingData.getEntityId()));
+    private static double getDecrementY(ChairSeatingData.ChairType chairType,
+                                        double slabAndStairsHeight,
+                                        double carpetHeight) {
+        switch (chairType) {
+            case SLAB:
+            case STAIR: {
+                return -slabAndStairsHeight;
+            }
+            default: {
+                return -carpetHeight;
+            }
+        }
     }
 
-    public static void spawn(SeatingData seatingData, EntityPlayer spectator) {
+    public static void destroy(ChairSeatingData seatingData, EntityPlayer spectator) {
+        spectator.playerConnection.sendPacket(new PacketPlayOutEntityDestroy(
+                seatingData.getSpigotId()
+        ));
+    }
+
+    public static void spawn(ChairSeatingData seatingData, EntityPlayer spectator) {
         Location location = seatingData.getLocation();
         EntityArmorStand armorStand = new EntityArmorStand(
                 ((CraftWorld) location.getWorld()).getHandle()
@@ -94,7 +92,7 @@ public final class SeatUtils {
                 location.getYaw(), 0
         );
 
-        armorStand.d(seatingData.getEntityId());
+        armorStand.d(seatingData.getSpigotId());
         armorStand.setGravity(false);
         armorStand.setInvisible(true);
         armorStand.setSmall(true);
