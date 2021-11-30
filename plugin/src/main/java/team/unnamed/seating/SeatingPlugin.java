@@ -12,12 +12,25 @@ import team.unnamed.seating.adapt.hook.HookRegistry;
 import team.unnamed.seating.command.CrawlCommand;
 import team.unnamed.seating.command.LayCommand;
 import team.unnamed.seating.command.SitCommand;
-import team.unnamed.seating.listener.*;
+import team.unnamed.seating.data.ChairSeatingData;
+import team.unnamed.seating.data.CrawlSeatingData;
+import team.unnamed.seating.data.SeatingData;
+import team.unnamed.seating.listener.CrawlListeners;
+import team.unnamed.seating.listener.PlayerJoinListener;
+import team.unnamed.seating.listener.RemovalSeatListeners;
+import team.unnamed.seating.listener.SitListeners;
 import team.unnamed.seating.message.MessageHandler;
+import team.unnamed.seating.registry.ChairSeatingDataRegistry;
+import team.unnamed.seating.registry.CrawlSeatingDataRegistry;
 import team.unnamed.seating.user.SimpleUserManager;
 import team.unnamed.seating.user.UserToggleSeatingManager;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static team.unnamed.bukkit.ServerVersionUtils.SERVER_VERSION_INT;
+import static team.unnamed.seating.util.CrawlUtils.regenerate;
 
 public class SeatingPlugin extends JavaPlugin {
 
@@ -27,7 +40,8 @@ public class SeatingPlugin extends JavaPlugin {
     private HookRegistry hookRegistry;
     private SeatingHandler seatingHandler;
     private SeatingEntityHandler seatingEntityHandler;
-    private SeatingDataRegistry seatingDataRegistry;
+    private SeatingDataRegistry<CrawlSeatingData> crawlDataRegistry;
+    private SeatingDataRegistry<ChairSeatingData> chairDataRegistry;
 
     @Override
     public void onLoad() {
@@ -49,33 +63,51 @@ public class SeatingPlugin extends JavaPlugin {
 
         seatingEntityHandler = adaptionModule.getEntityHandler(messageHandler);
 
-        seatingHandler = new SeatingHandler(getConfig());
-        seatingDataRegistry = new SimpleSeatingDataRegistry(seatingEntityHandler);
+        if (SERVER_VERSION_INT >= 13) {
+            crawlDataRegistry = new CrawlSeatingDataRegistry(this, seatingEntityHandler);
+        }
 
-        //hooks
+        chairDataRegistry = new ChairSeatingDataRegistry(seatingEntityHandler);
+
         hookRegistry = new HookRegistry();
         hookRegistry.setupHookManagers(this, adaptionModule);
+
+        seatingHandler = new SimpleSeatingHandler(
+                getConfig(), messageHandler,
+                crawlDataRegistry, chairDataRegistry,
+                hookRegistry, adaptionModule.getMaterialChecker(),
+                userToggleSeatingManager
+        );
 
         adaptionModule.registerPacketInterceptors(this);
     }
 
     @Override
     public void onEnable() {
-        registerListeners(
-                new PlayerInteractListener(seatingHandler, hookRegistry, userToggleSeatingManager, seatingDataRegistry),
-                new PlayerJoinListener(this, adaptionModule),
-                new PlayerDismountFakeEntityListener(seatingDataRegistry),
-                new PlayerLeaveListener(seatingDataRegistry),
-                new BlockListeners(seatingDataRegistry)
-        );
+        List<Listener> listeners = new ArrayList<>();
+        listeners.add(new PlayerJoinListener(this, adaptionModule));
+        listeners.add(new RemovalSeatListeners(chairDataRegistry, crawlDataRegistry));
+        listeners.add(new SitListeners(chairDataRegistry, seatingHandler));
 
-        registerCommand("sit", new SitCommand(seatingDataRegistry, messageHandler, userToggleSeatingManager));
+        if (crawlDataRegistry != null) {
+            listeners.add(new CrawlListeners(crawlDataRegistry, seatingHandler));
+            registerCommand("crawl", new CrawlCommand(messageHandler, seatingHandler));
+        }
+
+        listen(listeners);
+        registerCommand("sit", new SitCommand(messageHandler, seatingHandler));
         registerCommand("lay", new LayCommand(seatingEntityHandler));
-        registerCommand("crawl", new CrawlCommand(messageHandler, seatingEntityHandler));
     }
 
     @Override
     public void onDisable() {
+        // remove all blocks of players in crawl mode
+        if (crawlDataRegistry != null) {
+            for (SeatingData seatingData : crawlDataRegistry.getAllData()) {
+                regenerate(seatingData.getLocation().getBlock());
+            }
+        }
+
         try {
             userToggleSeatingManager.saveData(this);
         } catch (IOException e) {
@@ -87,7 +119,7 @@ public class SeatingPlugin extends JavaPlugin {
         getCommand(name).setExecutor(executor);
     }
 
-    private void registerListeners(Listener... listeners) {
+    private void listen(List<Listener> listeners) {
         PluginManager pluginManager = Bukkit.getPluginManager();
         for (Listener listener : listeners) {
             pluginManager.registerEvents(listener, this);

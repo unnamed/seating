@@ -4,20 +4,18 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import team.unnamed.seating.adapt.entity.SeatingEntityHandler;
+import team.unnamed.seating.SeatingHandler;
 import team.unnamed.seating.message.MessageHandler;
 
 public class CrawlCommand implements CommandExecutor {
 
     private final MessageHandler messageHandler;
-    private final SeatingEntityHandler seatingEntityHandler;
+    private final SeatingHandler seatingHandler;
 
-    public CrawlCommand(
-            MessageHandler messageHandler,
-            SeatingEntityHandler seatingEntityHandler
-    ) {
+    public CrawlCommand(MessageHandler messageHandler,
+                        SeatingHandler seatingHandler) {
         this.messageHandler = messageHandler;
-        this.seatingEntityHandler = seatingEntityHandler;
+        this.seatingHandler = seatingHandler;
     }
 
     @Override
@@ -39,7 +37,7 @@ public class CrawlCommand implements CommandExecutor {
             return true;
         }
 
-        seatingEntityHandler.crawl(player);
+        seatingHandler.crawl(player);
         return true;
     }
 
