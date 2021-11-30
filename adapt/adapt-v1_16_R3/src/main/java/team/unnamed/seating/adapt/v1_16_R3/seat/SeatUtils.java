@@ -1,10 +1,17 @@
 package team.unnamed.seating.adapt.v1_16_R3.seat;
 
-import net.minecraft.server.v1_16_R3.*;
+import net.minecraft.server.v1_16_R3.EntityArmorStand;
+import net.minecraft.server.v1_16_R3.EntityPlayer;
+import net.minecraft.server.v1_16_R3.EntityTypes;
+import net.minecraft.server.v1_16_R3.PacketPlayOutEntityDestroy;
+import net.minecraft.server.v1_16_R3.PacketPlayOutEntityMetadata;
+import net.minecraft.server.v1_16_R3.PacketPlayOutMount;
+import net.minecraft.server.v1_16_R3.PacketPlayOutSpawnEntityLiving;
+import net.minecraft.server.v1_16_R3.PlayerConnection;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
-import team.unnamed.seating.SeatingData;
+import team.unnamed.seating.data.ChairSeatingData;
+import team.unnamed.seating.data.SeatingData;
 
 import java.io.IOException;
 
@@ -26,25 +33,32 @@ public final class SeatUtils {
         return armorStand.getId();
     }
 
-    public static double calculateHeight(SeatingData seatingData) {
-        Material material = seatingData.getBlockType();
-        String materialName = material.name();
+    public static double calculateHeight(ChairSeatingData seatingData) {
         double incrementY;
+        ChairSeatingData.ChairType chairType = seatingData.getChairType();
 
-        if (materialName.contains("CARPET")) {
-            incrementY = CARPET_HEIGHT;
-        } else {
-            incrementY = SLAB_AND_STAIRS_HEIGHT;
+        switch (chairType) {
+            case SLAB:
+            case STAIR: {
+                incrementY = SLAB_AND_STAIRS_HEIGHT;
+                break;
+            }
+            default: {
+                incrementY = CARPET_HEIGHT;
+                break;
+            }
         }
 
         return -incrementY;
     }
 
-    public static void destroy(SeatingData seatingData, EntityPlayer spectator) {
-        spectator.playerConnection.sendPacket(new PacketPlayOutEntityDestroy(seatingData.getEntityId()));
+    public static void destroy(ChairSeatingData seatingData, EntityPlayer spectator) {
+        spectator.playerConnection.sendPacket(new PacketPlayOutEntityDestroy(
+                seatingData.getSpigotId()
+        ));
     }
 
-    public static void spawn(SeatingData seatingData, EntityPlayer spectator) {
+    public static void spawn(ChairSeatingData seatingData, EntityPlayer spectator) {
         Location location = seatingData.getLocation();
         EntityArmorStand armorStand = new EntityArmorStand(
                 EntityTypes.ARMOR_STAND,
@@ -58,7 +72,7 @@ public final class SeatUtils {
                 location.getYaw(), 0
         );
 
-        armorStand.e(seatingData.getEntityId());
+        armorStand.e(seatingData.getSpigotId());
         armorStand.setNoGravity(true);
         armorStand.setInvisible(true);
         armorStand.setSmall(true);
