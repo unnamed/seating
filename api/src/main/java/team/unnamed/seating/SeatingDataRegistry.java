@@ -4,33 +4,38 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
+import team.unnamed.seating.data.SeatingData;
 
 import java.util.Collection;
 import java.util.UUID;
 
-public interface SeatingDataRegistry {
+public interface SeatingDataRegistry<T extends SeatingData> {
 
-    Collection<SeatingData> getAllData();
+    Collection<T> getAllData();
 
-    @Nullable SeatingData getRegistry(UUID playerId);
+    @Nullable T getRegistry(UUID playerId);
 
-    default @Nullable SeatingData getRegistry(Player player) {
+    default @Nullable T getRegistry(Player player) {
         return getRegistry(player.getUniqueId());
     }
 
-    @Nullable SeatingData getRegistry(Location location);
+    @Nullable T getRegistry(Location location);
 
-    void addRegistry(Player player, SeatingData seatingData);
+    default boolean isRegistered(Player player) {
+        return getRegistry(player) != null;
+    }
+
+    void addRegistry(Player player, T seatingData);
 
     void createAndAddRegistry(Player player, Block block);
 
-    @Nullable SeatingData removeRegistry(UUID playerId);
+    @Nullable T removeRegistry(UUID playerId);
 
-    default @Nullable SeatingData removeRegistry(Player player) {
+    default @Nullable T removeRegistry(Player player) {
         return removeRegistry(player.getUniqueId());
     }
 
-    @Nullable SeatingData removeRegistry(Location location);
+    @Nullable T removeRegistry(Location location);
 
     boolean isLocationUsed(Location location);
 
