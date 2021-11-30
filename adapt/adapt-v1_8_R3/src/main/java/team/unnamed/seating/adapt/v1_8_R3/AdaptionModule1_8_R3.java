@@ -8,7 +8,9 @@ import team.unnamed.seating.adapt.AdaptionModule;
 import team.unnamed.seating.adapt.entity.SeatingEntityHandler;
 import team.unnamed.seating.adapt.hook.HookManager;
 import team.unnamed.seating.adapt.intercept.PacketChannelDuplexHandler;
+import team.unnamed.seating.adapt.material.MaterialChecker;
 import team.unnamed.seating.adapt.v1_8_R3.intercept.SteerVehiclePacketInterceptor;
+import team.unnamed.seating.adapt.v1_8_R3.material.MaterialChecker1_8_R3;
 import team.unnamed.seating.adapt.v1_8_R3.seat.SeatingEntityHandler1_8_R3;
 import team.unnamed.seating.adapt.v1_8_R3.hook.WorldGuardHookManager1_8_R3;
 import team.unnamed.seating.message.MessageHandler;
@@ -17,7 +19,12 @@ public class AdaptionModule1_8_R3 implements AdaptionModule {
 
     @Override
     public SeatingEntityHandler getEntityHandler(MessageHandler messageHandler) {
-        return new SeatingEntityHandler1_8_R3();
+        return new SeatingEntityHandler1_8_R3(messageHandler);
+    }
+
+    @Override
+    public MaterialChecker getMaterialChecker() {
+        return new MaterialChecker1_8_R3();
     }
 
     @Override
