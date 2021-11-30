@@ -1,37 +1,51 @@
 package team.unnamed.seating.adapt.v1_8_R3.seat;
 
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.minecraft.server.v1_8_R3.EntityTrackerEntry;
-
+import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.material.MaterialData;
 import org.bukkit.material.Stairs;
-
-import team.unnamed.seating.SeatingData;
+import org.bukkit.material.Step;
 import team.unnamed.seating.adapt.entity.SeatingEntityHandler;
 import team.unnamed.seating.adapt.v1_8_R3.track.EntityTrackerRegistry;
+import team.unnamed.seating.data.ChairSeatingData;
+import team.unnamed.seating.message.MessageHandler;
 
 public class SeatingEntityHandler1_8_R3 implements SeatingEntityHandler {
 
     private final EntityTrackerRegistry trackerRegistry;
+    private final MessageHandler messageHandler;
 
-    public SeatingEntityHandler1_8_R3() {
+    public SeatingEntityHandler1_8_R3(MessageHandler messageHandler) {
         this.trackerRegistry = new EntityTrackerRegistry();
+        this.messageHandler = messageHandler;
     }
 
     @Override
-    public Location calculateBaseLocation(Player owner, Block block) {
+    public void calculateBaseLocation(Player owner, Block block, ChairSeatingData.Builder builder) {
         Location location = block.getLocation();
         Material material = block.getType();
-        String materialName = material.name();
 
         float yaw = owner.getLocation().getYaw();
         double incrementX = 0.5;
         double incrementZ = 0.5;
 
-        if (materialName.contains("STAIRS")) {
-            Stairs stairs = (Stairs) block.getState().getData();
+        MaterialData materialData = block.getState().getData();
+        ChairSeatingData.ChairType chairType;
+
+        if (materialData instanceof Stairs) {
+            Stairs stairs = (Stairs) materialData;
+            if (stairs.isInverted()) {
+                return;
+            }
+
+            chairType = ChairSeatingData.ChairType.STAIR;
             switch (stairs.getFacing()) {
                 case EAST: {
                     yaw = -90;
@@ -54,6 +68,16 @@ public class SeatingEntityHandler1_8_R3 implements SeatingEntityHandler {
                     break;
                 }
             }
+        } else if (materialData instanceof Step) {
+            Step step = (Step) materialData;
+            if (step.isInverted()) {
+                return;
+            }
+            chairType = ChairSeatingData.ChairType.SLAB;
+        } else if (material.name().contains("CARPET")) {
+            chairType = ChairSeatingData.ChairType.CARPET;
+        } else {
+            chairType = ChairSeatingData.ChairType.BLOCK;
         }
 
         Location ownerLocation = owner.getLocation();
@@ -61,33 +85,38 @@ public class SeatingEntityHandler1_8_R3 implements SeatingEntityHandler {
         owner.teleport(ownerLocation);
         location.add(incrementX, 0, incrementZ);
         location.setYaw(yaw);
-        return location;
+        builder.setLocation(location)
+                .setBlockType(material)
+                .setChairType(chairType);
     }
 
     @Override
-    public void create(Player player, SeatingData seatingData) {
-        EntityTrackerEntry trackerEntry = new SeatingEntityTrackerEntry(seatingData);
-        seatingData.setEntityId(SeatUtils.generateId(seatingData));
+    public void sit(Player player, ChairSeatingData seatingData) {
+        EntityTrackerEntry trackerEntry = new ChairEntityTrackerEntry(seatingData);
+        seatingData.setSpigotId(SeatUtils.generateId(seatingData));
         trackerRegistry.bindEntry(seatingData, trackerEntry);
+        sendDismountActionbar(player);
     }
 
     @Override
-    public void destroy(SeatingData seatingData) {
+    public void destroySit(ChairSeatingData seatingData) {
         trackerRegistry.unbindEntry(seatingData);
     }
 
     @Override
     public void sendDismountActionbar(Player player) {
+        BaseComponent baseComponent = new TextComponent(messageHandler.getMessage("dismount"));
 
+        PacketPlayOutChat packetPlayOutChat = new PacketPlayOutChat(null, (byte) 2);
+        packetPlayOutChat.components = new BaseComponent[]{baseComponent};
+        ((CraftPlayer) player).getHandle()
+                .playerConnection
+                .sendPacket(packetPlayOutChat);
     }
 
     @Override
-    public void testLay(Player player) {
+    public void lay(Player player) {
 
     }
 
-    @Override
-    public void crawl(Player player) {
-
-    }
 }

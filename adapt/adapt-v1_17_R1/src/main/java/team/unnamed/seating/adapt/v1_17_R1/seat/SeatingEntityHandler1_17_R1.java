@@ -1,4 +1,5 @@
 package team.unnamed.seating.adapt.v1_17_R1.seat;
+
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.PropertyMap;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -15,46 +16,43 @@ import net.minecraft.server.level.WorldServer;
 import net.minecraft.server.network.PlayerConnection;
 import net.minecraft.world.entity.EntityPose;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Slab;
 import org.bukkit.block.data.type.Stairs;
-import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import team.unnamed.seating.SeatingData;
 import team.unnamed.seating.adapt.entity.SeatingEntityHandler;
-import team.unnamed.seating.adapt.v1_17_R1.track.CustomEntityTracker;
-import team.unnamed.seating.adapt.v1_17_R1.track.EmptyEntity;
+import team.unnamed.seating.data.ChairSeatingData;
 import team.unnamed.seating.message.MessageHandler;
 
 import java.util.UUID;
 
-import static team.unnamed.seating.adapt.v1_17_R1.track.CustomEntityTracker.ENTITY_TRACKER_FIELD;
+import static team.unnamed.seating.adapt.v1_17_R1.track.EntityTrackerAccessor.addEntry;
+import static team.unnamed.seating.adapt.v1_17_R1.track.EntityTrackerAccessor.removeEntry;
 
-public class SeatingEntityHandler1_17_R1 implements SeatingEntityHandler {
-
-    private final MessageHandler messageHandler;
-
-    public SeatingEntityHandler1_17_R1(MessageHandler messageHandler) {
-        this.messageHandler = messageHandler;
-    }
+public record SeatingEntityHandler1_17_R1(
+        MessageHandler messageHandler) implements SeatingEntityHandler {
 
     @Override
-    public Location calculateBaseLocation(Player owner, Block block) {
+    public void calculateBaseLocation(Player owner, Block block, ChairSeatingData.Builder builder) {
+        Material material = block.getType();
         Location location = block.getLocation();
         float yaw = owner.getLocation().getYaw();
         double incrementX = 0.5;
         double incrementZ = 0.5;
 
         BlockData blockData = block.getBlockData();
+        ChairSeatingData.ChairType chairType;
 
         if (blockData instanceof Stairs stairs) {
             if (stairs.getHalf() == Bisected.Half.TOP) {
-                return null;
+                return;
             }
 
+            chairType = ChairSeatingData.ChairType.STAIR;
             switch (stairs.getFacing().getOppositeFace()) {
                 case EAST -> {
                     yaw = -90;
@@ -75,8 +73,13 @@ public class SeatingEntityHandler1_17_R1 implements SeatingEntityHandler {
             }
         } else if (blockData instanceof Slab slab) {
             if (slab.getType() == Slab.Type.TOP) {
-                return null;
+                return;
             }
+            chairType = ChairSeatingData.ChairType.SLAB;
+        } else if (material.name().contains("CARPET")) {
+            chairType = ChairSeatingData.ChairType.CARPET;
+        } else {
+            chairType = ChairSeatingData.ChairType.BLOCK;
         }
 
         Location ownerLocation = owner.getLocation();
@@ -84,58 +87,36 @@ public class SeatingEntityHandler1_17_R1 implements SeatingEntityHandler {
         owner.teleport(ownerLocation);
         location.add(incrementX, 0, incrementZ);
         location.setYaw(yaw);
-        return location;
+        builder.setLocation(location)
+                .setBlockType(material)
+                .setChairType(chairType);
     }
 
     @Override
-    public void create(Player player, SeatingData seatingData) {
+    public void sit(Player player, ChairSeatingData seatingData) {
         int entityId = SeatUtils.generateId(seatingData);
-        seatingData.setEntityId(entityId);
+        seatingData.setSpigotId(entityId);
 
         Location seatLocation = seatingData.getLocation();
-        WorldServer worldServer = ((CraftWorld) seatLocation.getWorld()).getHandle();
-        EmptyEntity emptyEntity = new EmptyEntity(worldServer);
-        emptyEntity.e(entityId);
-
-        emptyEntity.setPosition(seatLocation.getX(), seatLocation.getY(), seatLocation.getZ());
-
-        PlayerChunkMap chunkMap = worldServer.getChunkProvider().a;
-        PlayerChunkMap.EntityTracker entityTracker = new CustomEntityTracker(chunkMap, emptyEntity);
-
-        ENTITY_TRACKER_FIELD.setAccessible(true);
-        try {
-            ENTITY_TRACKER_FIELD.set(
-                    entityTracker, new SeatingEntityTrackerEntry(
-                            worldServer, emptyEntity,
-                            entityTracker.f, seatingData
-                    )
-            );
-        } catch (IllegalAccessException ignored) {
-        } finally {
-            ENTITY_TRACKER_FIELD.setAccessible(false);
-        }
+        PlayerChunkMap.EntityTracker entityTracker = addEntry(
+                seatLocation, entityId,
+                (worldServer, entity, players) -> new ChairEntityTrackerEntry(
+                        worldServer, entity, players, seatingData
+                )
+        );
 
         EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
         entityTracker.updatePlayer(entityPlayer);
         sendDismountActionbar(entityPlayer);
-        chunkMap.G.put(entityId, entityTracker);
     }
 
     @Override
-    public void destroy(SeatingData seatingData) {
-        PlayerChunkMap.EntityTracker entityTracker
-                = ((CraftWorld) seatingData.getLocation().getWorld())
-                .getHandle()
-                .getChunkProvider()
-                .a.G.remove(seatingData.getEntityId());
-
-        if (entityTracker != null) {
-            entityTracker.a();
-        }
+    public void destroySit(ChairSeatingData seatingData) {
+        removeEntry(seatingData.getLocation(), seatingData.getSpigotId());
     }
 
     @Override
-    public void testLay(Player player) {
+    public void lay(Player player) {
         Location location = player.getLocation();
         EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
 
@@ -193,12 +174,6 @@ public class SeatingEntityHandler1_17_R1 implements SeatingEntityHandler {
                 null, ChatMessageType.c, entityPlayer.getUniqueID());
         packetPlayOutChat.components = new BaseComponent[]{baseComponent};
         entityPlayer.b.sendPacket(packetPlayOutChat);
-    }
-
-    @Override
-    public void crawl(Player player) {
-        // this can't be this simple (testing required)
-        player.setSwimming(!player.isSwimming());
     }
 
 }

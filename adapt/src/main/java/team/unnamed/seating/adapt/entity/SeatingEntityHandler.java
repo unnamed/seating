@@ -1,23 +1,19 @@
 package team.unnamed.seating.adapt.entity;
 
-import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-
-import team.unnamed.seating.SeatingData;
+import team.unnamed.seating.data.ChairSeatingData;
 
 public interface SeatingEntityHandler {
 
-    Location calculateBaseLocation(Player owner, Block block);
+    void calculateBaseLocation(Player owner, Block block, ChairSeatingData.Builder builder);
 
-    void create(Player player, SeatingData seatingData);
+    void sit(Player player, ChairSeatingData seatingData);
 
-    void destroy(SeatingData seatingData);
+    void destroySit(ChairSeatingData seatingData);
 
     void sendDismountActionbar(Player player);
 
-    void testLay(Player player);
-
-    void crawl(Player player);
+    void lay(Player player);
 
 }
