@@ -18,7 +18,7 @@ public class LayCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command,
                              String label, String[] args) {
         Player player = (Player) sender;
-        entityHandler.testLay(player);
+        entityHandler.lay(player);
 
         return true;
     }
