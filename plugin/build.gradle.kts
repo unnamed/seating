@@ -6,7 +6,6 @@ dependencies {
     api(project(":adapt"))
     compileOnly("org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT")
 
-
     arrayOf("1_16_R3", "1_8_R3").forEach {
         runtimeOnly(project(":adapt:adapt-v$it"))
     }
