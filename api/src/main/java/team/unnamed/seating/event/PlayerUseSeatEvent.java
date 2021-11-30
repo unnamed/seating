@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
-import team.unnamed.seating.SeatingData;
+import team.unnamed.seating.data.SeatingData;
 
 public class PlayerUseSeatEvent
         extends PlayerEvent
