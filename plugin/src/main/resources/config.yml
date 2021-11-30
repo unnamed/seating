@@ -1,8 +1,12 @@
 seating:
-    # Materials which are supported as seats
-    # If you want all supported materials (slabs, stairs & carpets) just
-    # set this value to "ALL"
-    materials: "ALL"
+    # Materials which are supported as chairs
+    # You can use tags with # (allowed: SLABS, STAIRS & CARPETS)
+    # Also you can add materials
+    chairs-materials:
+        - "#SLABS"
+        - "#STAIRS"
+        - "#CARPETS"
+        - "SNOW"
     # Worlds where seats cannot be used
     denied-worlds:
         - "test"
@@ -11,6 +15,7 @@ messages:
     no-permission: "&cYou don't have permission to execute command"
     # Message which will be displayed when sit down on a block or an entity
     # %keybind% is used to display the "shift" key
-    dismount: "&dPress &5%keybind% &dto dismount"
-    disable-seatings: "&dYou have disabled seats by clicking them."
-    enable-seatings: "&dYou have enabled seats by clicking them."
+    # NOTE: Keybinds aren't supported in 1.8
+    dismount: "&dPress &5%keybind% &dto get up"
+    disable-seatings: "&dYou have disabled seats, you won't be able to use crawl or chairs."
+    enable-seatings: "&dYou have enabled seats, now you can use crawl and chairs."
