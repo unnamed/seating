@@ -1,25 +1,26 @@
-package team.unnamed.seating.adapt.v1_8_R3.seat;
+package team.unnamed.seating.adapt.v1_16_R3.seat;
 
-import net.minecraft.server.v1_8_R3.EntityPlayer;
-import net.minecraft.server.v1_8_R3.PacketPlayOutEntity;
-import org.bukkit.Location;
+import net.minecraft.server.v1_16_R3.Entity;
+import net.minecraft.server.v1_16_R3.EntityPlayer;
+import net.minecraft.server.v1_16_R3.PacketPlayOutEntity;
+import net.minecraft.server.v1_16_R3.WorldServer;
 import org.bukkit.entity.Player;
-import team.unnamed.seating.SeatingData;
-import team.unnamed.seating.adapt.v1_8_R3.track.AbstractEntityTrackerEntry;
+import team.unnamed.seating.adapt.v1_16_R3.track.AbstractEntityTrackerEntry;
+import team.unnamed.seating.data.ChairSeatingData;
 
-public class SeatingEntityTrackerEntry
-        extends AbstractEntityTrackerEntry {
+import java.util.Set;
 
-    private final SeatingData seatingData;
+public class ChairEntityTrackerEntry extends AbstractEntityTrackerEntry {
+
+    private final Set<EntityPlayer> trackedPlayers;
+    private final ChairSeatingData seatingData;
     private byte lastYaw;
 
-    public SeatingEntityTrackerEntry(SeatingData seatingData) {
+    public ChairEntityTrackerEntry(WorldServer worldserver, Entity entity,
+                                   Set<EntityPlayer> trackedPlayers, ChairSeatingData seatingData) {
+        super(worldserver, entity, trackedPlayers);
         this.seatingData = seatingData;
-    }
-
-    @Override
-    protected Location getLocation() {
-        return seatingData.getLocation();
+        this.trackedPlayers = trackedPlayers;
     }
 
     @Override
@@ -36,7 +37,7 @@ public class SeatingEntityTrackerEntry
 
         PacketPlayOutEntity.PacketPlayOutEntityLook entityLookPacket =
                 new PacketPlayOutEntity.PacketPlayOutEntityLook(
-                        seatingData.getEntityId(),
+                        seatingData.getSpigotId(),
                         yaw, (byte) 0, false
                 );
 

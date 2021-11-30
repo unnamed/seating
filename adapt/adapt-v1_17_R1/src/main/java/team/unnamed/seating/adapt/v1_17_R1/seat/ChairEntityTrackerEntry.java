@@ -6,19 +6,20 @@ import net.minecraft.server.level.WorldServer;
 import net.minecraft.server.network.ServerPlayerConnection;
 import net.minecraft.world.entity.Entity;
 import org.bukkit.entity.Player;
-import team.unnamed.seating.SeatingData;
 import team.unnamed.seating.adapt.v1_17_R1.track.AbstractEntityTrackerEntry;
+import team.unnamed.seating.data.ChairSeatingData;
 
 import java.util.Set;
 
-public class SeatingEntityTrackerEntry extends AbstractEntityTrackerEntry {
+public class ChairEntityTrackerEntry extends AbstractEntityTrackerEntry {
 
     private final Set<ServerPlayerConnection> trackedPlayers;
-    private final SeatingData seatingData;
+    private final ChairSeatingData seatingData;
     private byte lastYaw;
 
-    public SeatingEntityTrackerEntry(WorldServer worldserver, Entity entity,
-                                     Set<ServerPlayerConnection> trackedPlayers, SeatingData seatingData) {
+    public ChairEntityTrackerEntry(WorldServer worldserver, Entity entity,
+                                   Set<ServerPlayerConnection> trackedPlayers,
+                                   ChairSeatingData seatingData) {
         super(worldserver, entity, trackedPlayers);
         this.seatingData = seatingData;
         this.trackedPlayers = trackedPlayers;
@@ -38,7 +39,7 @@ public class SeatingEntityTrackerEntry extends AbstractEntityTrackerEntry {
 
         PacketPlayOutEntity.PacketPlayOutEntityLook entityLookPacket =
                 new PacketPlayOutEntity.PacketPlayOutEntityLook(
-                        seatingData.getEntityId(),
+                        seatingData.getSpigotId(),
                         yaw, (byte) 0, false
                 );
 
@@ -49,12 +50,12 @@ public class SeatingEntityTrackerEntry extends AbstractEntityTrackerEntry {
 
     @Override
     protected void show(EntityPlayer player) {
-        SeatUtils.spawn(seatingData, player);
+        SeatUtils.spawnChair(seatingData, player);
     }
 
     @Override
     protected void hide(EntityPlayer player) {
-        SeatUtils.destroy(seatingData, player);
+        SeatUtils.destroyChair(seatingData, player);
     }
 
 }
