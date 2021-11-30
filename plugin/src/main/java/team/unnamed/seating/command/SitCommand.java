@@ -4,22 +4,18 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import team.unnamed.seating.SeatingDataRegistry;
+import team.unnamed.seating.SeatingHandler;
 import team.unnamed.seating.message.MessageHandler;
-import team.unnamed.seating.user.UserToggleSeatingManager;
 
 public class SitCommand implements CommandExecutor {
 
-    private final SeatingDataRegistry dataRegistry;
     private final MessageHandler messageHandler;
-    private final UserToggleSeatingManager userToggleSeatingManager;
+    private final SeatingHandler seatingHandler;
 
-    public SitCommand(SeatingDataRegistry dataRegistry,
-                      MessageHandler messageHandler,
-                      UserToggleSeatingManager userToggleSeatingManager) {
-        this.dataRegistry = dataRegistry;
+    public SitCommand(MessageHandler messageHandler,
+                      SeatingHandler seatingHandler) {
         this.messageHandler = messageHandler;
-        this.userToggleSeatingManager = userToggleSeatingManager;
+        this.seatingHandler = seatingHandler;
     }
 
     @Override
@@ -39,10 +35,9 @@ public class SitCommand implements CommandExecutor {
         }
 
         if (args.length == 0) {
-            dataRegistry.createAndAddRegistry(player, player.getLocation().getBlock());
+            seatingHandler.sit(player, player.getLocation().getBlock(), true);
         } else {
-            String path = userToggleSeatingManager.toggleSeating(player) ? "enable" : "disable";
-            messageHandler.sendMessage(player, path + "-seatings");
+            seatingHandler.toggleSeating(player);
         }
 
         return false;
