@@ -15,28 +15,44 @@ import team.unnamed.seating.adapt.hook.HookManager;
 public class WorldGuardHookManager1_16_R3
         implements HookManager {
 
-    private StateFlag seatFlag;
+    private StateFlag sitFlag;
+    private StateFlag crawlFlag;
 
     @Override
     public void setup(Plugin plugin) {
         FlagRegistry flagRegistry = WorldGuard.getInstance().getFlagRegistry();
-
-        Flag<?> registeredFlag = flagRegistry.get(WORLDGUARD_FLAG);
-        if (registeredFlag == null) {
-            seatFlag = new StateFlag(WORLDGUARD_FLAG, true);
-            flagRegistry.register(seatFlag);
-        } else {
-            seatFlag = (StateFlag) registeredFlag;
-        }
+        sitFlag = createFlag(flagRegistry, SIT_WORLDGUARD_FLAG);
+        crawlFlag = createFlag(flagRegistry, CRAWL_WORLDGUARD_FLAG);
     }
 
     @Override
-    public boolean isAvailableToSeat(Location location, Player player) {
+    public boolean isAvailableToSit(Location location, Player player) {
+        return checkState(sitFlag, location);
+    }
+
+    @Override
+    public boolean isAvailableToCrawl(Player player) {
+        return checkState(crawlFlag, player.getLocation());
+    }
+
+    private boolean checkState(StateFlag flag, Location location) {
         return WorldGuard.getInstance()
                 .getPlatform()
                 .getRegionContainer()
                 .createQuery()
-                .testState(BukkitAdapter.adapt(location), null, seatFlag);
+                .testState(BukkitAdapter.adapt(location), null, flag);
+    }
+
+    private StateFlag createFlag(FlagRegistry flagRegistry, String name) {
+        StateFlag flag;
+        Flag<?> registeredFlag = flagRegistry.get(name);
+        if (registeredFlag == null) {
+            flag = new StateFlag(name, true);
+            flagRegistry.register(sitFlag);
+        } else {
+            flag = (StateFlag) registeredFlag;
+        }
+        return flag;
     }
 
 }

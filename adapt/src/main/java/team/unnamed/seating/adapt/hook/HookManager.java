@@ -6,10 +6,13 @@ import org.bukkit.plugin.Plugin;
 
 public interface HookManager {
 
-    String WORLDGUARD_FLAG = "seating";
+    String SIT_WORLDGUARD_FLAG = "sit";
+    String CRAWL_WORLDGUARD_FLAG = "crawl";
 
     void setup(Plugin plugin);
 
-    boolean isAvailableToSeat(Location location, Player player);
+    boolean isAvailableToSit(Location location, Player player);
+
+    boolean isAvailableToCrawl(Player player);
 
 }

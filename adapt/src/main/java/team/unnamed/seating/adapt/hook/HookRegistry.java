@@ -18,9 +18,16 @@ public class HookRegistry {
         this.hookManagers = new HashSet<>();
     }
 
-    public boolean isAvailableToSeat(Location location, Player player) {
+    public boolean isAvailableToSit(Location location, Player player) {
         for (HookManager hookManager : hookManagers) {
-            return hookManager.isAvailableToSeat(location, player);
+            return hookManager.isAvailableToSit(location, player);
+        }
+        return true;
+    }
+
+    public boolean isAvailableToCrawl(Player player) {
+        for (HookManager hookManager : hookManagers) {
+            return hookManager.isAvailableToCrawl(player);
         }
         return true;
     }
