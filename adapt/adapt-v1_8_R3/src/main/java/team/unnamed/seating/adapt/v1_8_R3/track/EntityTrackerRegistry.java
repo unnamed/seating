@@ -1,8 +1,7 @@
 package team.unnamed.seating.adapt.v1_8_R3.track;
 
 import net.minecraft.server.v1_8_R3.EntityTrackerEntry;
-
-import team.unnamed.seating.SeatingData;
+import team.unnamed.seating.data.SeatingData;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,11 +19,11 @@ public class EntityTrackerRegistry {
         EntityTrackerAccessor.addEntry(
                 seatingData.getLocation().getWorld(), entry
         );
-        entries.put(seatingData.getOwnerReference(), entry);
+        entries.put(seatingData.getOwnerId(), entry);
     }
 
     public void unbindEntry(SeatingData seatingData) {
-        EntityTrackerEntry entry = entries.remove(seatingData.getOwnerReference());
+        EntityTrackerEntry entry = entries.remove(seatingData.getOwnerId());
 
         if (entry == null) {
             return;
