@@ -48,7 +48,7 @@ public class WorldGuardHookManager1_16_R3
         Flag<?> registeredFlag = flagRegistry.get(name);
         if (registeredFlag == null) {
             flag = new StateFlag(name, true);
-            flagRegistry.register(sitFlag);
+            flagRegistry.register(flag);
         } else {
             flag = (StateFlag) registeredFlag;
         }
