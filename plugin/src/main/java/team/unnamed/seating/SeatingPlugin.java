@@ -48,8 +48,6 @@ public class SeatingPlugin extends JavaPlugin {
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
 
-        messageHandler = new MessageHandler(getConfig());
-
         userToggleSeatingManager = new SimpleUserManager();
 
         try {
@@ -61,6 +59,7 @@ public class SeatingPlugin extends JavaPlugin {
             return;
         }
 
+        messageHandler = new MessageHandler(getConfig());
         seatingEntityHandler = adaptionModule.getEntityHandler(messageHandler);
 
         if (SERVER_VERSION_INT >= 13) {
