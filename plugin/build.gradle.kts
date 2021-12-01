@@ -1,5 +1,5 @@
 plugins {
-    id("com.github.johnrengelman.shadow") version("7.0.0")
+    id("com.github.johnrengelman.shadow") version ("7.0.0")
 }
 
 dependencies {
@@ -9,10 +9,14 @@ dependencies {
     arrayOf("1_16_R3", "1_8_R3").forEach {
         runtimeOnly(project(":adapt:adapt-v$it"))
     }
-    if (project.property("java") == "16") {
-        arrayOf("1_17_R1").forEach {
-            runtimeOnly(project(":adapt:adapt-v$it"))
-        }
+
+    val java = Integer.parseInt(project.property("java") as String?)
+    if (java >= 16) {
+        runtimeOnly(project(":adapt:adapt-v1_17_R1"))
+    }
+
+    if (java >= 17) {
+        runtimeOnly(project(":adapt:adapt-v1_18_R1"))
     }
 }
 

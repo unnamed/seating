@@ -21,6 +21,7 @@ subprojects {
         maven("https://repo.codemc.io/repository/nms/")
         maven("https://maven.enginehub.org/repo/")
         maven("https://repo.viaversion.com")
+        maven("https://libraries.minecraft.net/")
         mavenCentral()
     }
 }
