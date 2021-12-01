@@ -117,32 +117,32 @@ public record SeatingEntityHandler1_17_R1(
 
     @Override
     public void lay(Player player) {
-        Location location = player.getLocation();
-        EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
-
-        GameProfile gameProfile = new GameProfile(UUID.randomUUID(), entityPlayer.displayName);
-        PropertyMap propertyMap = gameProfile.getProperties();
-        propertyMap.removeAll("textures");
-        propertyMap.putAll("textures", entityPlayer.getProfile().getProperties().get("textures"));
-
-        WorldServer worldServer = entityPlayer.getWorldServer();
-        EntityPlayer fakePlayer = new EntityPlayer(
-                entityPlayer.c, worldServer, gameProfile
-        );
-
-        fakePlayer.setLocation(location.getX(), location.getY(), location.getZ(), 180, 0);
-        PacketPlayOutNamedEntitySpawn namedEntitySpawnPacket
-                = new PacketPlayOutNamedEntitySpawn(fakePlayer);
-
-        PlayerConnection playerConnection = entityPlayer.b;
-        playerConnection.sendPacket(new PacketPlayOutPlayerInfo(
-                PacketPlayOutPlayerInfo.EnumPlayerInfoAction.a, fakePlayer
-        ));
-        playerConnection.sendPacket(namedEntitySpawnPacket);
-
-        fakePlayer.setPose(EntityPose.c);
-        playerConnection.sendPacket(new PacketPlayOutEntityMetadata(
-                fakePlayer.getId(), fakePlayer.getDataWatcher(), false));
+//        Location location = player.getLocation();
+//        EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
+//
+//        GameProfile gameProfile = new GameProfile(UUID.randomUUID(), entityPlayer.displayName);
+//        PropertyMap propertyMap = gameProfile.getProperties();
+//        propertyMap.removeAll("textures");
+//        propertyMap.putAll("textures", entityPlayer.getProfile().getProperties().get("textures"));
+//
+//        WorldServer worldServer = entityPlayer.getWorldServer();
+//        EntityPlayer fakePlayer = new EntityPlayer(
+//                entityPlayer.c, worldServer, gameProfile
+//        );
+//
+//        fakePlayer.setLocation(location.getX(), location.getY(), location.getZ(), 180, 0);
+//        PacketPlayOutNamedEntitySpawn namedEntitySpawnPacket
+//                = new PacketPlayOutNamedEntitySpawn(fakePlayer);
+//
+//        PlayerConnection playerConnection = entityPlayer.b;
+//        playerConnection.sendPacket(new PacketPlayOutPlayerInfo(
+//                PacketPlayOutPlayerInfo.EnumPlayerInfoAction.a, fakePlayer
+//        ));
+//        playerConnection.sendPacket(namedEntitySpawnPacket);
+//
+//        fakePlayer.setPose(EntityPose.c);
+//        playerConnection.sendPacket(new PacketPlayOutEntityMetadata(
+//                fakePlayer.getId(), fakePlayer.getDataWatcher(), false));
     }
 
     @Override
