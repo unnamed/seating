@@ -6,7 +6,7 @@ jobs:
         runs-on: 'ubuntu-latest'
         strategy:
             matrix:
-                java-version: [ 8, 16 ]
+                java-version: [ 8, 16, 17 ]
         steps:
             - name: 'checkout repo'
               uses: 'actions/checkout@v2'
