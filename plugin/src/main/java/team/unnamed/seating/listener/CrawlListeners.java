@@ -43,10 +43,6 @@ public class CrawlListeners implements Listener {
         if (event.isSneaking()) {
             if (crawlDataRegistry.removeRegistry(player) == null) {
                 if (player.getLocation().getPitch() > 45) { // check if player is looking at floor
-                    if (isBlockedToCrawl(player)) {
-                        return;
-                    }
-
                     seatingHandler.crawl(player);
                 }
             }

@@ -16,6 +16,8 @@ import team.unnamed.seating.user.UserToggleSeatingManager;
 
 import java.util.List;
 
+import static team.unnamed.seating.util.CrawlUtils.isBlockedToCrawl;
+
 public class SimpleSeatingHandler implements SeatingHandler {
 
     private final FileConfiguration configuration;
@@ -128,6 +130,10 @@ public class SimpleSeatingHandler implements SeatingHandler {
     public void crawl(Player player) {
         Location location = player.getLocation();
         if (isWorldDenied(location.getWorld())) {
+            return;
+        }
+
+        if (isBlockedToCrawl(player)) {
             return;
         }
 
