@@ -10,6 +10,7 @@ import team.unnamed.seating.SeatingDataRegistry;
 import team.unnamed.seating.SeatingHandler;
 import team.unnamed.seating.data.CrawlSeatingData;
 
+import static team.unnamed.seating.SeatingHandler.CRAWL_PERMISSION;
 import static team.unnamed.seating.util.CrawlUtils.isBlockedToCrawl;
 
 public class CrawlListeners implements Listener {
@@ -40,8 +41,13 @@ public class CrawlListeners implements Listener {
     @EventHandler
     public void onToggleSneak(PlayerToggleSneakEvent event) {
         Player player = event.getPlayer();
+
         if (event.isSneaking()) {
             if (crawlDataRegistry.removeRegistry(player) == null) {
+                if (!player.hasPermission(CRAWL_PERMISSION)) {
+                    return;
+                }
+
                 if (player.getLocation().getPitch() > 45) { // check if player is looking at floor
                     seatingHandler.crawl(player);
                 }

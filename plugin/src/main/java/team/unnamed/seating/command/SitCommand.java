@@ -7,6 +7,9 @@ import org.bukkit.entity.Player;
 import team.unnamed.seating.SeatingHandler;
 import team.unnamed.seating.message.MessageHandler;
 
+import static team.unnamed.seating.SeatingHandler.SIT_PERMISSION;
+import static team.unnamed.seating.SeatingHandler.SIT_TOGGLE_PERMISSION;
+
 public class SitCommand implements CommandExecutor {
 
     private final MessageHandler messageHandler;
@@ -28,8 +31,8 @@ public class SitCommand implements CommandExecutor {
 
         Player player = (Player) sender;
 
-        if (!player.hasPermission("seating.sit")
-                || !player.hasPermission("seating.sit-toggle")) {
+        if (!player.hasPermission(SIT_PERMISSION)
+                || !player.hasPermission(SIT_TOGGLE_PERMISSION)) {
             messageHandler.sendMessage(player, "no-permission");
             return true;
         }

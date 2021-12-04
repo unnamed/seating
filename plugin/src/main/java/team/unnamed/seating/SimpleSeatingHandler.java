@@ -45,11 +45,6 @@ public class SimpleSeatingHandler implements SeatingHandler {
     }
 
     @Override
-    public boolean isAllowedToUse(Player player) {
-        return player.hasPermission("seating.sit");
-    }
-
-    @Override
     public boolean isWorldDenied(World world) {
         List<String> deniedWorldNames = configuration.getStringList("seating.denied-worlds");
         return deniedWorldNames.contains(world.getName());

@@ -7,6 +7,8 @@ import org.bukkit.entity.Player;
 import team.unnamed.seating.SeatingHandler;
 import team.unnamed.seating.message.MessageHandler;
 
+import static team.unnamed.seating.SeatingHandler.CRAWL_PERMISSION;
+
 public class CrawlCommand implements CommandExecutor {
 
     private final MessageHandler messageHandler;
@@ -32,7 +34,7 @@ public class CrawlCommand implements CommandExecutor {
 
         Player player = (Player) sender;
 
-        if (!player.hasPermission("seating.crawl")) {
+        if (!player.hasPermission(CRAWL_PERMISSION)) {
             messageHandler.sendMessage(player, "no-permission");
             return true;
         }

@@ -18,6 +18,8 @@ import team.unnamed.seating.event.PlayerDismountFakeEntityEvent;
 
 import java.util.List;
 
+import static team.unnamed.seating.SeatingHandler.SIT_PERMISSION;
+
 public class SitListeners implements Listener {
 
     private final SeatingDataRegistry<ChairSeatingData> chairDataRegistry;
@@ -79,7 +81,7 @@ public class SitListeners implements Listener {
 
         Player player = event.getPlayer();
 
-        if (seatingHandler.isAllowedToUse(player)) {
+        if (player.hasPermission(SIT_PERMISSION)) {
             if (player.getItemInHand().getType() != Material.AIR) {
                 return;
             }

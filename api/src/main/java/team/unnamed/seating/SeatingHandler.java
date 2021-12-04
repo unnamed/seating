@@ -6,7 +6,9 @@ import org.bukkit.entity.Player;
 
 public interface SeatingHandler {
 
-    boolean isAllowedToUse(Player player);
+    String SIT_PERMISSION = "seating.sit";
+    String CRAWL_PERMISSION = "seating.crawl";
+    String SIT_TOGGLE_PERMISSION = "seating.toggle";
 
     boolean isWorldDenied(World world);
 
