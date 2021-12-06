@@ -7,6 +7,8 @@ seating:
         - "#STAIRS"
         - "#CARPETS"
         - "SNOW"
+    # Distance between chair block and player to use it
+    chairs-use-range: 3
     # Worlds where seats cannot be used
     denied-worlds:
         - "test"

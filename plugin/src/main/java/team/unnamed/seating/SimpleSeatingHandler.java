@@ -45,6 +45,12 @@ public class SimpleSeatingHandler implements SeatingHandler {
     }
 
     @Override
+    public boolean isInChairUseRange(Player player, Block block) {
+        return Math.floor(player.getLocation().distance(block.getLocation()))
+                <= configuration.getInt("seating.chairs-use-range");
+    }
+
+    @Override
     public boolean isWorldDenied(World world) {
         List<String> deniedWorldNames = configuration.getStringList("seating.denied-worlds");
         return deniedWorldNames.contains(world.getName());

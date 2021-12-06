@@ -10,6 +10,8 @@ public interface SeatingHandler {
     String CRAWL_PERMISSION = "seating.crawl";
     String SIT_TOGGLE_PERMISSION = "seating.toggle";
 
+    boolean isInChairUseRange(Player player, Block block);
+
     boolean isWorldDenied(World world);
 
     boolean isChairMaterial(Block block);

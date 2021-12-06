@@ -86,7 +86,9 @@ public class SitListeners implements Listener {
                 return;
             }
 
-            seatingHandler.sit(player, block, false);
+            if (seatingHandler.isInChairUseRange(player, block)) {
+                seatingHandler.sit(player, block, false);
+            }
         }
     }
 
