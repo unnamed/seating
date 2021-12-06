@@ -7,8 +7,6 @@ name: unseating
 softdepend: [WorldGuard, ViaVersion]
 commands:
     sit:
-        description: Use the block below as a seat
-    lay:
-        description: Lay
+        description: Use the block below as a chair
     crawl:
-        description: Crawl
+        description: Use the block below as a crawlspace
