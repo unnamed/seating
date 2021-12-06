@@ -6,6 +6,8 @@ import org.bukkit.entity.Player;
 import java.lang.ref.WeakReference;
 import java.util.UUID;
 
+import static team.unnamed.seating.util.CrawlUtils.buildLocation;
+
 public interface SeatingData {
 
     Type getType();
@@ -23,7 +25,7 @@ public interface SeatingData {
     Location getLocation();
 
     static CrawlSeatingData createCrawlData(Player player) {
-        return new CrawlSeatingData(player, player.getLocation());
+        return new CrawlSeatingData(player, buildLocation(player));
     }
 
     enum Type {
