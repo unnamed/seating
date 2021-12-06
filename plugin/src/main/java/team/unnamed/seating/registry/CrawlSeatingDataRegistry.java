@@ -42,8 +42,8 @@ public class CrawlSeatingDataRegistry
 
         if (seatingData != null) {
             Block block = seatingData.getLocation().getBlock();
-            regenerate(block);
             Bukkit.getScheduler().cancelTask(seatingData.getSpigotId());
+            regenerate(block);
         }
 
         return seatingData;
