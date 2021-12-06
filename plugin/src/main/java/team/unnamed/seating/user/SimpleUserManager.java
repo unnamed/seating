@@ -11,25 +11,24 @@ import java.util.UUID;
 
 public class SimpleUserManager implements UserToggleSeatingManager {
 
-    private final Set<UUID> disabledSeatingUsers;
+    private final Set<UUID> enabledSeatingUsers;
 
     public SimpleUserManager() {
-        disabledSeatingUsers = new HashSet<>();
+        enabledSeatingUsers = new HashSet<>();
     }
 
     @Override
     public boolean hasSeatingEnabled(Player player) {
-        return !disabledSeatingUsers.contains(player.getUniqueId());
+        return enabledSeatingUsers.contains(player.getUniqueId());
     }
 
     @Override
     public boolean toggleSeating(Player player) {
         UUID playerId = player.getUniqueId();
-        if (disabledSeatingUsers.remove(playerId)) {
-            return true;
-        } else {
-            disabledSeatingUsers.add(playerId);
+        if (enabledSeatingUsers.remove(playerId)) {
             return false;
+        } else {
+            return enabledSeatingUsers.add(playerId);
         }
     }
 
@@ -45,7 +44,7 @@ public class SimpleUserManager implements UserToggleSeatingManager {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                disabledSeatingUsers.add(UUID.fromString(line));
+                enabledSeatingUsers.add(UUID.fromString(line));
             }
         }
     }
@@ -55,7 +54,7 @@ public class SimpleUserManager implements UserToggleSeatingManager {
         File file = new File(plugin.getDataFolder(), "users.txt");
         if (file.exists()) {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-                Iterator<UUID> iterator = disabledSeatingUsers.iterator();
+                Iterator<UUID> iterator = enabledSeatingUsers.iterator();
                 while (iterator.hasNext()) {
                     writer.write(iterator.next().toString());
 
