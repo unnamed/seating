@@ -58,9 +58,4 @@ public class CrawlRunnable implements Runnable {
         storedLocation.setZ(currentPosition.getZ());
     }
 
-    private Location buildLocation(Player owner) {
-        return owner.getLocation().getBlock()
-                .getLocation().add(0, 1, 0);
-    }
-
 }
