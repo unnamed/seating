@@ -21,6 +21,11 @@ dependencies {
 }
 
 tasks {
+    shadowJar {
+        archiveBaseName.set("seating")
+        archiveClassifier.set("java${project.property("java")}")
+    }
+
     processResources {
         filesMatching("**/*.yml") {
             filter<org.apache.tools.ant.filters.ReplaceTokens>(
