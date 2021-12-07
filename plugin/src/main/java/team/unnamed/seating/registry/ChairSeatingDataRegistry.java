@@ -4,7 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
-import team.unnamed.seating.adapt.entity.SeatingEntityHandler;
+import team.unnamed.seating.adapt.seat.SeatingEntityHandler;
 import team.unnamed.seating.data.ChairSeatingData;
 
 import java.util.HashMap;

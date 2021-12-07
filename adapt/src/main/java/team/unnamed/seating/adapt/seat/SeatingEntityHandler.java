@@ -1,4 +1,4 @@
-package team.unnamed.seating.adapt.entity;
+package team.unnamed.seating.adapt.seat;
 
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;

@@ -1,4 +1,4 @@
-package team.unnamed.seating.adapt.entity;
+package team.unnamed.seating.adapt.seat;
 
 public final class SeatingHeightConstants {
 

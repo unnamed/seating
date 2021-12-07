@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 import team.unnamed.seating.data.ChairSeatingData;
 import team.unnamed.seating.data.SeatingData;
 
-import static team.unnamed.seating.adapt.entity.SeatingHeightConstants.*;
+import static team.unnamed.seating.adapt.seat.SeatingHeightConstants.*;
 
 public final class SeatUtils {
 

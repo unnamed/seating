@@ -7,7 +7,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import team.unnamed.seating.adapt.AdaptionModule;
 import team.unnamed.seating.adapt.AdaptionModuleFactory;
-import team.unnamed.seating.adapt.entity.SeatingEntityHandler;
+import team.unnamed.seating.adapt.seat.SeatingEntityHandler;
 import team.unnamed.seating.adapt.hook.HookRegistry;
 import team.unnamed.seating.command.CrawlCommand;
 import team.unnamed.seating.command.SitCommand;

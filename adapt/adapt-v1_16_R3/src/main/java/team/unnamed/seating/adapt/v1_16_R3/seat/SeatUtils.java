@@ -15,8 +15,8 @@ import team.unnamed.seating.data.SeatingData;
 
 import java.io.IOException;
 
-import static team.unnamed.seating.adapt.entity.SeatingHeightConstants.CARPET_HEIGHT;
-import static team.unnamed.seating.adapt.entity.SeatingHeightConstants.SLAB_AND_STAIRS_HEIGHT;
+import static team.unnamed.seating.adapt.seat.SeatingHeightConstants.CARPET_HEIGHT;
+import static team.unnamed.seating.adapt.seat.SeatingHeightConstants.SLAB_AND_STAIRS_HEIGHT;
 
 public final class SeatUtils {
 

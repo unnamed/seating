@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.Stairs;
 import org.bukkit.material.Step;
-import team.unnamed.seating.adapt.entity.SeatingEntityHandler;
+import team.unnamed.seating.adapt.seat.SeatingEntityHandler;
 import team.unnamed.seating.adapt.v1_8_R3.track.EntityTrackerRegistry;
 import team.unnamed.seating.data.ChairSeatingData;
 import team.unnamed.seating.message.MessageHandler;

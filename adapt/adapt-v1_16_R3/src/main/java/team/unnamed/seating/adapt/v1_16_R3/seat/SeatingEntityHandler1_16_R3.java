@@ -19,7 +19,7 @@ import org.bukkit.block.data.type.Stairs;
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import team.unnamed.seating.adapt.entity.SeatingEntityHandler;
+import team.unnamed.seating.adapt.seat.SeatingEntityHandler;
 import team.unnamed.seating.adapt.v1_16_R3.track.CustomEntityTracker;
 import team.unnamed.seating.adapt.v1_16_R3.track.EmptyEntity;
 import team.unnamed.seating.data.ChairSeatingData;

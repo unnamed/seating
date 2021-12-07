@@ -13,8 +13,8 @@ import org.bukkit.craftbukkit.v1_18_R1.CraftWorld;
 import team.unnamed.seating.data.ChairSeatingData;
 import team.unnamed.seating.data.SeatingData;
 
-import static team.unnamed.seating.adapt.entity.SeatingHeightConstants.CARPET_HEIGHT;
-import static team.unnamed.seating.adapt.entity.SeatingHeightConstants.SLAB_AND_STAIRS_HEIGHT;
+import static team.unnamed.seating.adapt.seat.SeatingHeightConstants.CARPET_HEIGHT;
+import static team.unnamed.seating.adapt.seat.SeatingHeightConstants.SLAB_AND_STAIRS_HEIGHT;
 
 public final class SeatUtils {
 

@@ -5,7 +5,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 import team.unnamed.seating.SeatingDataRegistry;
-import team.unnamed.seating.adapt.entity.SeatingEntityHandler;
+import team.unnamed.seating.adapt.seat.SeatingEntityHandler;
 import team.unnamed.seating.data.SeatingData;
 import team.unnamed.seating.event.PlayerUseSeatEvent;
 
