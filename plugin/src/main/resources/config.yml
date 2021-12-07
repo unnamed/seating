@@ -14,10 +14,19 @@ seating:
         - "test"
 
 messages:
+    only-players: "&cOnly players can use this command!"
     no-permission: "&cYou don't have permission to execute command"
-    # Message which will be displayed when sit down on a block or an entity
-    # %keybind% is used to display the "shift" key
-    # NOTE: Keybinds aren't supported in 1.8
-    dismount: "&dPress &5%keybind% &dto get up"
+    dismount:
+        # You can change how to display the message
+        # Allowed types:
+        #   -> "message"
+        #   -> "actionbar"
+        #   -> "title;fadeIn;stay;fadeOut"
+        #   -> "subtitle;fadeIn;stay;fadeOut"
+        type: "actionbar"
+        # Message which will be displayed when use seats (crawl or sit)
+        # %keybind% is used to display the "shift" key
+        #   -> Keybinds aren't supported in 1.8
+        message: "&dPress &5%keybind% &dto get up"
     disable-seatings: "&dYou have disabled seats, you won't be able to use crawl or chairs."
     enable-seatings: "&dYou have enabled seats, now you can use crawl and chairs."
