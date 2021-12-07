@@ -12,8 +12,6 @@ public interface SeatingEntityHandler {
 
     void destroySit(ChairSeatingData seatingData);
 
-    void sendDismountActionbar(Player player);
-
     void lay(Player player);
 
 }

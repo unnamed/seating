@@ -1,13 +1,9 @@
 package team.unnamed.seating.adapt.v1_8_R3.seat;
 
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.minecraft.server.v1_8_R3.EntityTrackerEntry;
-import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.Stairs;
@@ -95,23 +91,12 @@ public class SeatingEntityHandler1_8_R3 implements SeatingEntityHandler {
         EntityTrackerEntry trackerEntry = new ChairEntityTrackerEntry(seatingData);
         seatingData.setSpigotId(SeatUtils.generateId(seatingData));
         trackerRegistry.bindEntry(seatingData, trackerEntry);
-        sendDismountActionbar(player);
+        messageHandler.sendDismountMessage(player);
     }
 
     @Override
     public void destroySit(ChairSeatingData seatingData) {
         trackerRegistry.unbindEntry(seatingData);
-    }
-
-    @Override
-    public void sendDismountActionbar(Player player) {
-        BaseComponent baseComponent = new TextComponent(messageHandler.getMessage("dismount"));
-
-        PacketPlayOutChat packetPlayOutChat = new PacketPlayOutChat(null, (byte) 2);
-        packetPlayOutChat.components = new BaseComponent[]{baseComponent};
-        ((CraftPlayer) player).getHandle()
-                .playerConnection
-                .sendPacket(packetPlayOutChat);
     }
 
     @Override

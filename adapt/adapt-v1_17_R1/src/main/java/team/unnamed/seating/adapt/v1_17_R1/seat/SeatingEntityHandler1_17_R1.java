@@ -1,5 +1,23 @@
 package team.unnamed.seating.adapt.v1_17_R1.seat;
 
+import net.minecraft.server.level.EntityPlayer;
+import net.minecraft.server.level.PlayerChunkMap;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.data.Bisected;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.type.Slab;
+import org.bukkit.block.data.type.Stairs;
+import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
+import org.bukkit.entity.Player;
+import team.unnamed.seating.adapt.seat.SeatingEntityHandler;
+import team.unnamed.seating.data.ChairSeatingData;
+import team.unnamed.seating.message.MessageHandler;
+
+import static team.unnamed.seating.adapt.v1_17_R1.track.EntityTrackerAccessor.addEntry;
+import static team.unnamed.seating.adapt.v1_17_R1.track.EntityTrackerAccessor.removeEntry;
+
 public record SeatingEntityHandler1_17_R1(
         MessageHandler messageHandler) implements SeatingEntityHandler {
 
@@ -74,7 +92,7 @@ public record SeatingEntityHandler1_17_R1(
 
         EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
         entityTracker.updatePlayer(entityPlayer);
-        sendDismountActionbar(entityPlayer);
+        messageHandler.sendDismountMessage(player);
     }
 
     @Override
@@ -110,37 +128,6 @@ public record SeatingEntityHandler1_17_R1(
 //        fakePlayer.setPose(EntityPose.c);
 //        playerConnection.sendPacket(new PacketPlayOutEntityMetadata(
 //                fakePlayer.getId(), fakePlayer.getDataWatcher(), false));
-    }
-
-    @Override
-    public void sendDismountActionbar(Player player) {
-        sendDismountActionbar(((CraftPlayer) player).getHandle());
-    }
-
-    private void sendDismountActionbar(EntityPlayer entityPlayer) {
-        String dismountMessage = messageHandler.getMessage("dismount");
-        String[] componentKeys = dismountMessage.split("%keybind%");
-        BaseComponent baseComponent = new TextComponent();
-        BaseComponent lastComponent = null;
-
-        for (int i = 0; i < componentKeys.length; i++) {
-            if (i != 0) {
-                BaseComponent component = new KeybindComponent("key.sneak");
-                component.copyFormatting(lastComponent);
-                baseComponent.addExtra(component);
-            }
-
-            BaseComponent[] components = TextComponent.fromLegacyText(componentKeys[i]);
-            lastComponent = components[components.length - 1];
-            for (BaseComponent component : components) {
-                baseComponent.addExtra(component);
-            }
-        }
-
-        PacketPlayOutChat packetPlayOutChat = new PacketPlayOutChat(
-                null, ChatMessageType.c, entityPlayer.getUniqueID());
-        packetPlayOutChat.components = new BaseComponent[]{baseComponent};
-        entityPlayer.b.sendPacket(packetPlayOutChat);
     }
 
 }
