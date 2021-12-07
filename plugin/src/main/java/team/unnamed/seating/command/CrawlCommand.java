@@ -27,19 +27,16 @@ public class CrawlCommand implements CommandExecutor {
             String label,
             String[] args
     ) {
-        if (!(sender instanceof Player)) {
-            sender.sendMessage("You must be a player to do this");
+        if (messageHandler.sendOnlyPlayersMessage(sender)) {
             return true;
         }
 
         Player player = (Player) sender;
 
-        if (!player.hasPermission(CRAWL_PERMISSION)) {
-            messageHandler.sendMessage(player, "no-permission");
-            return true;
+        if (messageHandler.hasPermission(player, CRAWL_PERMISSION)) {
+            seatingHandler.crawl(player);
         }
 
-        seatingHandler.crawl(player);
         return true;
     }
 

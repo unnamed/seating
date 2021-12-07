@@ -24,26 +24,23 @@ public class SitCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command,
                              String label, String[] args) {
-        if (!(sender instanceof Player)) {
-            sender.sendMessage("You must be a player to do this");
+        if (messageHandler.sendOnlyPlayersMessage(sender)) {
             return true;
         }
 
         Player player = (Player) sender;
 
-        if (!player.hasPermission(SIT_PERMISSION)
-                || !player.hasPermission(SIT_TOGGLE_PERMISSION)) {
-            messageHandler.sendMessage(player, "no-permission");
-            return true;
-        }
-
         if (args.length == 0) {
-            seatingHandler.sit(player, player.getLocation().getBlock(), true);
+            if (messageHandler.hasPermission(player, SIT_PERMISSION)) {
+                seatingHandler.sit(player, player.getLocation().getBlock(), true);
+            }
         } else {
-            seatingHandler.toggleSeating(player);
+            if (messageHandler.hasPermission(player, SIT_TOGGLE_PERMISSION)) {
+                seatingHandler.toggleSeating(player);
+            }
         }
 
-        return false;
+        return true;
     }
 
 }
