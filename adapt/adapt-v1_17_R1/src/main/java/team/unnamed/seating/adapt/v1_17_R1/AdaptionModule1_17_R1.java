@@ -5,10 +5,12 @@ import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import team.unnamed.seating.adapt.AdaptionModule;
+import team.unnamed.seating.adapt.display.MessageDisplayHandler;
 import team.unnamed.seating.adapt.seat.SeatingEntityHandler;
 import team.unnamed.seating.adapt.hook.HookManager;
 import team.unnamed.seating.adapt.intercept.PacketChannelDuplexHandler;
 import team.unnamed.seating.adapt.material.MaterialChecker;
+import team.unnamed.seating.adapt.v1_17_R1.display.MessageDisplayHandler1_17_R1;
 import team.unnamed.seating.adapt.v1_17_R1.intercept.SteerVehiclePacketInterceptor;
 import team.unnamed.seating.adapt.v1_17_R1.material.MaterialChecker1_17_R1;
 import team.unnamed.seating.adapt.v1_17_R1.seat.SeatingEntityHandler1_17_R1;
@@ -20,6 +22,11 @@ public class AdaptionModule1_17_R1 implements AdaptionModule {
     @Override
     public SeatingEntityHandler getEntityHandler(MessageHandler messageHandler) {
         return new SeatingEntityHandler1_17_R1(messageHandler);
+    }
+
+    @Override
+    public MessageDisplayHandler getMessageDisplayHandler() {
+        return new MessageDisplayHandler1_17_R1();
     }
 
     @Override
