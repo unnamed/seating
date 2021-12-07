@@ -2,16 +2,12 @@ package team.unnamed.seating.adapt.v1_8_R3.seat;
 
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.ViaAPI;
-import net.minecraft.server.v1_8_R3.EntityArmorStand;
-import net.minecraft.server.v1_8_R3.EntityPlayer;
-import net.minecraft.server.v1_8_R3.PacketPlayOutAttachEntity;
-import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
-import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntityLiving;
-import net.minecraft.server.v1_8_R3.PlayerConnection;
+import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import team.unnamed.seating.adapt.v1_8_R3.Packets;
 import team.unnamed.seating.data.ChairSeatingData;
 import team.unnamed.seating.data.SeatingData;
 
@@ -97,11 +93,12 @@ public final class SeatUtils {
         armorStand.setInvisible(true);
         armorStand.setSmall(true);
 
-        PlayerConnection playerConnection = spectator.playerConnection;
-        playerConnection.sendPacket(new PacketPlayOutSpawnEntityLiving(armorStand));
-        playerConnection.sendPacket(new PacketPlayOutAttachEntity(
-                0, ((CraftPlayer) seatingData.getOwner()).getHandle(), armorStand
-        ));
+        Packets.send(spectator,
+                new PacketPlayOutSpawnEntityLiving(armorStand),
+                new PacketPlayOutAttachEntity(
+                        0, ((CraftPlayer) seatingData.getOwner()).getHandle(),
+                        armorStand
+                ));
     }
 
 }

@@ -5,11 +5,11 @@ import net.minecraft.network.protocol.game.PacketPlayOutEntityMetadata;
 import net.minecraft.network.protocol.game.PacketPlayOutMount;
 import net.minecraft.network.protocol.game.PacketPlayOutSpawnEntityLiving;
 import net.minecraft.server.level.EntityPlayer;
-import net.minecraft.server.network.PlayerConnection;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.decoration.EntityArmorStand;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_18_R1.CraftWorld;
+import team.unnamed.seating.adapt.v1_18_R1.Packets;
 import team.unnamed.seating.data.ChairSeatingData;
 import team.unnamed.seating.data.SeatingData;
 
@@ -45,7 +45,7 @@ public final class SeatUtils {
     }
 
     public static void destroyChair(ChairSeatingData seatingData, EntityPlayer spectator) {
-        spectator.b.a(new PacketPlayOutEntityDestroy(seatingData.getSpigotId()));
+        Packets.send(spectator, new PacketPlayOutEntityDestroy(seatingData.getSpigotId()));
     }
 
     public static void spawnChair(ChairSeatingData seatingData, EntityPlayer spectator) {
@@ -66,15 +66,16 @@ public final class SeatUtils {
         armorStand.j(true); // set invisible
         armorStand.a(true); // set small
 
-        PlayerConnection playerConnection = spectator.b;
-        playerConnection.a(new PacketPlayOutSpawnEntityLiving(armorStand));
-        playerConnection.a(new PacketPlayOutEntityMetadata(
-                armorStand.ae(), armorStand.ai(), false
-        ));
-
-        playerConnection.a(new PacketPlayOutMount(new PacketMountSerializer(
-                armorStand.ae(), seatingData.getOwner().getEntityId()
-        )));
+        Packets.send(
+                spectator,
+                new PacketPlayOutSpawnEntityLiving(armorStand),
+                new PacketPlayOutEntityMetadata(
+                        armorStand.ae(), armorStand.ai(), false
+                ),
+                new PacketPlayOutMount(new PacketMountSerializer(
+                        armorStand.ae(), seatingData.getOwner().getEntityId()
+                ))
+        );
     }
 
 }

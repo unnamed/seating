@@ -10,6 +10,7 @@ import net.minecraft.server.v1_16_R3.PacketPlayOutSpawnEntityLiving;
 import net.minecraft.server.v1_16_R3.PlayerConnection;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
+import team.unnamed.seating.adapt.v1_16_R3.Packets;
 import team.unnamed.seating.data.ChairSeatingData;
 import team.unnamed.seating.data.SeatingData;
 
@@ -53,9 +54,7 @@ public final class SeatUtils {
     }
 
     public static void destroy(ChairSeatingData seatingData, EntityPlayer spectator) {
-        spectator.playerConnection.sendPacket(new PacketPlayOutEntityDestroy(
-                seatingData.getSpigotId()
-        ));
+        Packets.send(spectator, new PacketPlayOutEntityDestroy(seatingData.getSpigotId()));
     }
 
     public static void spawn(ChairSeatingData seatingData, EntityPlayer spectator) {
@@ -77,12 +76,6 @@ public final class SeatUtils {
         armorStand.setInvisible(true);
         armorStand.setSmall(true);
 
-        PlayerConnection playerConnection = spectator.playerConnection;
-        playerConnection.sendPacket(new PacketPlayOutSpawnEntityLiving(armorStand));
-        playerConnection.sendPacket(new PacketPlayOutEntityMetadata(
-                armorStand.getId(), armorStand.getDataWatcher(), false
-        ));
-
         PacketPlayOutMount packetPlayOutMount = new PacketPlayOutMount();
 
         try {
@@ -92,7 +85,14 @@ public final class SeatUtils {
         } catch (IOException ignored) {
         }
 
-        playerConnection.sendPacket(packetPlayOutMount);
+        Packets.send(
+                spectator,
+                new PacketPlayOutSpawnEntityLiving(armorStand),
+                new PacketPlayOutEntityMetadata(
+                        armorStand.getId(), armorStand.getDataWatcher(), false
+                ),
+                packetPlayOutMount
+        );
     }
 
 }
