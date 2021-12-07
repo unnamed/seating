@@ -1,7 +1,6 @@
 package team.unnamed.seating;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import team.unnamed.seating.data.SeatingData;
@@ -13,14 +12,12 @@ import static team.unnamed.seating.util.CrawlUtils.*;
 public class CrawlRunnable implements Runnable {
 
     private final WeakReference<Player> ownerReference;
-    private final Location storedLocation;
-    private Location lastOwnerPosition;
+    private final Location location;
 
     public CrawlRunnable(SeatingData seatingData) {
         this.ownerReference = seatingData.getOwnerReference();
-        this.storedLocation = seatingData.getLocation();
-        this.lastOwnerPosition = buildLocation(seatingData.getOwner());
-        lastOwnerPosition.getBlock().setType(Material.BARRIER);
+        this.location = seatingData.getLocation();
+        generateBarrier(location.getBlock());
     }
 
     @Override
@@ -31,7 +28,7 @@ public class CrawlRunnable implements Runnable {
             return;
         }
 
-        Block lastBlock = lastOwnerPosition.getBlock();
+        Block lastBlock = location.getBlock();
 
         if (isBlockedToCrawl(owner)) { // this checks avoids any type of visual bugs
             regenerate(lastBlock);
@@ -39,23 +36,25 @@ public class CrawlRunnable implements Runnable {
         }
 
         Location currentPosition = buildLocation(owner);
+        int currentX = currentPosition.getBlockX();
+        int currentY = currentPosition.getBlockY();
+        int currentZ = currentPosition.getBlockZ();
 
-        if (lastOwnerPosition.equals(currentPosition)) { // check if players is in same location
+        if (
+                location.getBlockX() == currentX &&
+                        location.getBlockY() == currentY &&
+                        location.getBlockZ() == currentZ
+        ) { // check if player is in same location
             generateBarrier(lastBlock);
-            return;
+        } else {
+            generateBarrier(currentPosition.getBlock());
+            regenerate(lastBlock);
+
+            // update stored location
+            location.setX(currentX);
+            location.setY(currentY);
+            location.setZ(currentZ);
         }
-
-        Block currentBlock = currentPosition.getBlock();
-
-        generateBarrier(currentBlock);
-        regenerate(lastBlock);
-
-        lastOwnerPosition = currentPosition;
-
-        // update stored location
-        storedLocation.setX(currentPosition.getX());
-        storedLocation.setY(currentPosition.getY());
-        storedLocation.setZ(currentPosition.getZ());
     }
 
 }
