@@ -11,6 +11,7 @@ import team.unnamed.seating.CrawlRunnable;
 import team.unnamed.seating.adapt.seat.SeatingEntityHandler;
 import team.unnamed.seating.data.CrawlSeatingData;
 import team.unnamed.seating.data.SeatingData;
+import team.unnamed.seating.message.MessageHandler;
 
 import java.util.UUID;
 
@@ -20,16 +21,19 @@ public class CrawlSeatingDataRegistry
         extends AbstractSeatingDataRegistry<CrawlSeatingData> {
 
     private final Plugin plugin;
+    private final MessageHandler messageHandler;
 
-    public CrawlSeatingDataRegistry(Plugin plugin, SeatingEntityHandler entityHandler) {
+    public CrawlSeatingDataRegistry(Plugin plugin, SeatingEntityHandler entityHandler,
+                                    MessageHandler messageHandler) {
         super(entityHandler);
         this.plugin = plugin;
+        this.messageHandler = messageHandler;
     }
 
     @Override
     public void addRegistry(Player player, CrawlSeatingData seatingData) {
         super.addRegistry(player, seatingData);
-        entityHandler.sendDismountActionbar(player);
+        messageHandler.sendDismountMessage(player);
         BukkitTask bukkitTask = Bukkit.getScheduler().runTaskTimer(
                 plugin, new CrawlRunnable(seatingData), 0, 1
         );
