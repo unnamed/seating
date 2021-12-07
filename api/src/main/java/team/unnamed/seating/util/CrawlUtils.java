@@ -23,13 +23,14 @@ public final class CrawlUtils {
     }
 
     public static void generateBarrier(Block block) {
-        if (block.getType() == Material.AIR) {
+        if (block.getType().isAir()) {
             block.setType(Material.BARRIER);
         }
     }
 
     public static boolean isBlockedToCrawl(Player player) {
-        return player.isFlying() ||
+        return player.isFlying() || player.isInsideVehicle() ||
+                player.isSleeping() || player.isGliding() ||
                 player.getLocation().getBlock().isLiquid() ||
                 !player.isOnGround() || player.isSprinting();
     }
