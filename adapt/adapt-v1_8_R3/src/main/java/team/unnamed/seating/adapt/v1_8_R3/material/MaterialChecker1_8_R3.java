@@ -21,4 +21,9 @@ public class MaterialChecker1_8_R3 implements MaterialChecker {
     public boolean isCarpet(Block block) {
         return block.getType() == Material.CARPET;
     }
+
+    @Override
+    public boolean isAir(Block block) {
+        return block.getType() == Material.AIR;
+    }
 }

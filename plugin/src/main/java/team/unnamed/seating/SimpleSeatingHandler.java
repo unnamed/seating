@@ -113,7 +113,7 @@ public class SimpleSeatingHandler implements SeatingHandler {
                     return;
                 }
 
-                if (block.getRelative(BlockFace.UP).getType() != Material.AIR) {
+                if (!materialChecker.isAir(block.getRelative(BlockFace.UP))) {
                     return;
                 }
 
