@@ -46,8 +46,15 @@ public class SimpleSeatingHandler implements SeatingHandler {
 
     @Override
     public boolean isInChairUseRange(Player player, Block block) {
-        return Math.floor(player.getLocation().distance(block.getLocation()))
-                <= configuration.getInt("seating.chairs-use-range");
+        int range = configuration.getInt("seating.chairs-use-range");
+
+        if (range == 0) { // ignore range
+            return true;
+        }
+
+        return Math.floor(
+                player.getLocation().distance(block.getLocation())
+        ) <= range;
     }
 
     @Override
