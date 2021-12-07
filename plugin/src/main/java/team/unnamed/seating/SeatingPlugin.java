@@ -18,6 +18,7 @@ import team.unnamed.seating.listener.CrawlListeners;
 import team.unnamed.seating.listener.PlayerJoinListener;
 import team.unnamed.seating.listener.RemovalSeatListeners;
 import team.unnamed.seating.listener.SitListeners;
+import team.unnamed.seating.message.DefaultMessageHandler;
 import team.unnamed.seating.message.MessageHandler;
 import team.unnamed.seating.registry.ChairSeatingDataRegistry;
 import team.unnamed.seating.registry.CrawlSeatingDataRegistry;
@@ -58,11 +59,15 @@ public class SeatingPlugin extends JavaPlugin {
             return;
         }
 
-        messageHandler = new MessageHandler(getConfig());
+        messageHandler = new DefaultMessageHandler(
+                getConfig(), adaptionModule.getMessageDisplayHandler()
+        );
         seatingEntityHandler = adaptionModule.getEntityHandler(messageHandler);
 
         if (SERVER_VERSION_INT >= 13) {
-            crawlDataRegistry = new CrawlSeatingDataRegistry(this, seatingEntityHandler);
+            crawlDataRegistry = new CrawlSeatingDataRegistry(
+                    this, seatingEntityHandler, messageHandler
+            );
         }
 
         chairDataRegistry = new ChairSeatingDataRegistry(seatingEntityHandler);
