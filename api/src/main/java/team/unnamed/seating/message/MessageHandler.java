@@ -1,55 +1,28 @@
 package team.unnamed.seating.message;
 
-import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Collections;
 import java.util.List;
 
-public class MessageHandler {
+public interface MessageHandler {
 
-    private static final String BASE_MESSAGES_PATH = "messages.%s";
+    String BASE_MESSAGES_PATH = "messages.%s";
 
-    private final FileConfiguration configuration;
+    String getMessage(String path);
 
-    public MessageHandler(FileConfiguration configuration) {
-        this.configuration = configuration;
-    }
+    List<String> getMessages(String path);
 
-    public String getMessage(String path) {
-        String message = configuration.getString(makePath(path));
+    void sendMessage(CommandSender player, String path);
 
-        if (message == null) {
-            return path;
-        }
+    void sendMessages(CommandSender player, String path);
 
-        return ChatColor.translateAlternateColorCodes('&', message);
-    }
+    void sendDismountMessage(Player player);
 
-    public List<String> getMessages(String path) {
-        List<String> messages = configuration.getStringList(makePath(path));
+    boolean sendOnlyPlayersMessage(CommandSender player);
 
-        if (messages.isEmpty()) {
-            return Collections.singletonList(path);
-        }
+    boolean hasPermission(Player player, String permission);
 
-        messages.replaceAll(message ->
-                ChatColor.translateAlternateColorCodes('&', message));
-
-        return messages;
-    }
-
-    public void sendMessage(Player player, String path) {
-        player.sendMessage(getMessage(path));
-    }
-
-    public void sendMessages(Player player, String path) {
-        player.sendMessage(String.join("\n", getMessage(path)));
-    }
-
-    private String makePath(String path) {
-        return String.format(BASE_MESSAGES_PATH, path);
-    }
+    String makePath(String path);
 
 }
