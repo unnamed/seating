@@ -56,13 +56,13 @@ public class SimpleUserManager implements UserManager {
     @Override
     public void saveData(Plugin plugin) throws IOException {
         File file = new File(plugin.getDataFolder(), "users");
-        boolean write = false;
+        boolean write = true;
         if (!file.exists()) {
             write = file.createNewFile();
         }
 
         if (!write) {
-            throw new IOException("Could not create file");
+            throw new IOException("Could not create users file");
         }
 
         try (DataOutputStream output =
