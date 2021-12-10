@@ -30,12 +30,14 @@ import team.unnamed.seating.user.UserManager;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 import static team.unnamed.bukkit.ServerVersionUtils.SERVER_VERSION_INT;
 import static team.unnamed.seating.util.CrawlUtils.regenerate;
 
 public class SeatingPlugin extends JavaPlugin {
 
+    private boolean loadError = false;
     private MessageHandler messageHandler;
     private AdaptionModule adaptionModule;
     private UserManager userManager;
@@ -55,10 +57,12 @@ public class SeatingPlugin extends JavaPlugin {
         try {
             adaptionModule = AdaptionModuleFactory.create();
             userManager.loadData(this);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Bukkit.getPluginManager().disablePlugin(this);
-            return;
+        } catch (IOException e) {
+            getLogger().log(Level.SEVERE, "Cannot load user data", e);
+            loadError = true;
+        } catch (IllegalStateException e) {
+            getLogger().log(Level.SEVERE, "Unsupported server version", e);
+            loadError = true;
         }
 
         messageHandler = new DefaultMessageHandler(
@@ -89,6 +93,11 @@ public class SeatingPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        if (loadError) {
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+
         List<Listener> listeners = new ArrayList<>();
         listeners.add(new PlayerJoinListener(this, adaptionModule));
         listeners.add(new RemovalSeatListeners(chairDataRegistry, crawlDataRegistry));
@@ -115,7 +124,7 @@ public class SeatingPlugin extends JavaPlugin {
         try {
             userManager.saveData(this);
         } catch (IOException e) {
-            e.printStackTrace();
+            getLogger().log(Level.SEVERE, "Cannot save user data", e);
         }
     }
 
