@@ -31,8 +31,10 @@ seating:
         - "#STAIRS"
         - "#CARPETS"
         - "SNOW"
+
     # Distance between chair block and player to use it
     chairs-use-range: 3
+
     # Worlds where seats cannot be used
     denied-worlds:
         - "test"
@@ -48,6 +50,7 @@ messages:
         #   -> "title;fadeIn;stay;fadeOut"
         #   -> "subtitle;fadeIn;stay;fadeOut"
         type: "actionbar"
+
         # Message which will be displayed when use seats (crawl or sit)
         # %keybind% is used to display the "shift" key
         #   -> Keybinds aren't supported in 1.8
