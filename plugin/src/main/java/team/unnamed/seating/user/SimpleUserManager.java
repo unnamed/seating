@@ -4,64 +4,75 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.io.*;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
-public class SimpleUserManager implements UserToggleSeatingManager {
+public class SimpleUserManager implements UserManager {
 
-    private final Set<UUID> enabledSeatingUsers;
+    private final Map<UUID, Byte> enabledSeatingUsers;
 
     public SimpleUserManager() {
-        enabledSeatingUsers = new HashSet<>();
+        enabledSeatingUsers = new HashMap<>();
+    }
+
+    private boolean hasPropertyEnabled(byte mask, byte property) {
+        return (mask & property) != 0x0;
     }
 
     @Override
-    public boolean hasSeatingEnabled(Player player) {
-        return enabledSeatingUsers.contains(player.getUniqueId());
+    public boolean hasSeatingEnable(Player player, byte property) {
+        Byte mask = enabledSeatingUsers.get(player.getUniqueId());
+        return mask != null && hasPropertyEnabled(mask, property);
     }
 
     @Override
-    public boolean toggleSeating(Player player) {
+    public boolean toggleSeating(Player player, byte property) {
         UUID playerId = player.getUniqueId();
-        if (enabledSeatingUsers.remove(playerId)) {
-            return false;
-        } else {
-            return enabledSeatingUsers.add(playerId);
-        }
+        Byte mask = enabledSeatingUsers.get(playerId);
+        byte newMask = mask == null ? 0x0 : mask;
+
+        newMask ^= property;
+
+        enabledSeatingUsers.put(playerId, newMask);
+        return hasPropertyEnabled(newMask, property);
     }
 
     @Override
     public void loadData(Plugin plugin) throws IOException {
-        File file = new File(plugin.getDataFolder(), "users.txt");
-        if (!file.exists()) {
-            if (!file.createNewFile()) {
-                throw new IOException("Cannot create users file.");
-            }
-        }
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                enabledSeatingUsers.add(UUID.fromString(line));
+        File file = new File(plugin.getDataFolder(), "users");
+        if (file.exists()) {
+            try (DataInputStream input = new DataInputStream(new FileInputStream(file))) {
+                int size = input.readInt();
+                for (int i = 0; i < size; i++) {
+                    UUID uuid = new UUID(input.readLong(), input.readLong());
+                    byte mask = input.readByte();
+                    enabledSeatingUsers.put(uuid, mask);
+                }
             }
         }
     }
 
     @Override
     public void saveData(Plugin plugin) throws IOException {
-        File file = new File(plugin.getDataFolder(), "users.txt");
-        if (file.exists()) {
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-                Iterator<UUID> iterator = enabledSeatingUsers.iterator();
-                while (iterator.hasNext()) {
-                    writer.write(iterator.next().toString());
+        File file = new File(plugin.getDataFolder(), "users");
+        boolean write = false;
+        if (!file.exists()) {
+            write = file.createNewFile();
+        }
 
-                    if (iterator.hasNext()) {
-                        writer.write("\n");
-                    }
-                }
+        if (!write) {
+            throw new IOException("Could not create file");
+        }
+
+        try (DataOutputStream output =
+                     new DataOutputStream(new FileOutputStream(file))) {
+            output.writeInt(enabledSeatingUsers.size()); // write size for future reading
+            for (Map.Entry<UUID, Byte> entry : enabledSeatingUsers.entrySet()) {
+                UUID uuid = entry.getKey();
+                output.writeLong(uuid.getMostSignificantBits());
+                output.writeLong(uuid.getLeastSignificantBits());
+                output.writeByte(entry.getValue());
             }
         }
     }

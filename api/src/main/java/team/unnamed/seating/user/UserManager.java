@@ -12,19 +12,22 @@ import java.io.IOException;
  * Designed for storing only users who
  * have disabled the use of seats.
  */
-public interface UserToggleSeatingManager {
+public interface UserManager {
+
+    byte CRAWL = 0x01;
+    byte SIT = 0x02;
 
     /**
      * @param player player to check
      * @return if player has seats enabled.
      */
-    boolean hasSeatingEnabled(Player player);
+    boolean hasSeatingEnable(Player player, byte property);
 
     /**
      * @param player player to add or remove from storage
      * @return if player has toggled seats.
      */
-    boolean toggleSeating(Player player);
+    boolean toggleSeating(Player player, byte property);
 
     void loadData(Plugin plugin) throws IOException;
 
