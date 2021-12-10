@@ -28,5 +28,9 @@ messages:
         # %keybind% is used to display the "shift" key
         #   -> Keybinds aren't supported in 1.8
         message: "&dPress &5%keybind% &dto get up"
-    disable-seatings: "&dYou have disabled seats, you won't be able to use crawl or chairs."
-    enable-seatings: "&dYou have enabled seats, now you can use crawl and chairs."
+    disable-seatings:
+        sit: "&dNow you won't be able to sit!"
+        crawl: "&dNow you will no longer be able to get crawl when shifting!"
+    enable-seatings:
+        sit: "&dNow you can sit!"
+        crawl: "&dNow you can crawl!"

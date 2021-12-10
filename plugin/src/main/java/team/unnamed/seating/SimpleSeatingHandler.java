@@ -12,10 +12,12 @@ import team.unnamed.seating.adapt.material.MaterialChecker;
 import team.unnamed.seating.data.ChairSeatingData;
 import team.unnamed.seating.data.CrawlSeatingData;
 import team.unnamed.seating.message.MessageHandler;
-import team.unnamed.seating.user.UserToggleSeatingManager;
+import team.unnamed.seating.user.UserManager;
 
 import java.util.List;
 
+import static team.unnamed.seating.user.UserManager.CRAWL;
+import static team.unnamed.seating.user.UserManager.SIT;
 import static team.unnamed.seating.util.CrawlUtils.isBlockedToCrawl;
 
 public class SimpleSeatingHandler implements SeatingHandler {
@@ -26,7 +28,7 @@ public class SimpleSeatingHandler implements SeatingHandler {
     private final SeatingDataRegistry<ChairSeatingData> chairDataRegistry;
     private final HookRegistry hookRegistry;
     private final MaterialChecker materialChecker;
-    private final UserToggleSeatingManager userToggleSeatingManager;
+    private final UserManager userManager;
 
     public SimpleSeatingHandler(FileConfiguration configuration,
                                 MessageHandler messageHandler,
@@ -34,14 +36,14 @@ public class SimpleSeatingHandler implements SeatingHandler {
                                 SeatingDataRegistry<ChairSeatingData> chairDataRegistry,
                                 HookRegistry hookRegistry,
                                 MaterialChecker materialChecker,
-                                UserToggleSeatingManager userToggleSeatingManager) {
+                                UserManager userManager) {
         this.configuration = configuration;
         this.messageHandler = messageHandler;
         this.crawlDataRegistry = crawlDataRegistry;
         this.chairDataRegistry = chairDataRegistry;
         this.hookRegistry = hookRegistry;
         this.materialChecker = materialChecker;
-        this.userToggleSeatingManager = userToggleSeatingManager;
+        this.userManager = userManager;
     }
 
     @Override
@@ -101,9 +103,25 @@ public class SimpleSeatingHandler implements SeatingHandler {
     }
 
     @Override
-    public void toggleSeating(Player player) {
-        String path = userToggleSeatingManager.toggleSeating(player) ? "enable" : "disable";
-        messageHandler.sendMessage(player, path + "-seatings");
+    public void toggleSeating(Player player, byte property) {
+        String toggleType = "";
+
+        switch (property) {
+            case SIT: {
+                toggleType = "sit";
+                break;
+            }
+            case CRAWL: {
+                toggleType = "crawl";
+                break;
+            }
+        }
+
+        String path = userManager
+                .toggleSeating(player, property) ?
+                "enable" : "disable";
+
+        messageHandler.sendMessage(player, path + "-seatings." + toggleType);
     }
 
     @Override
@@ -112,7 +130,7 @@ public class SimpleSeatingHandler implements SeatingHandler {
             return;
         }
 
-        if (userToggleSeatingManager.hasSeatingEnabled(player)) {
+        if (userManager.hasSeatingEnable(player, SIT)) {
             Location location = block.getLocation();
 
             if (hookRegistry.isAvailableToSit(location, player)) {
@@ -159,7 +177,7 @@ public class SimpleSeatingHandler implements SeatingHandler {
             return;
         }
 
-        if (userToggleSeatingManager.hasSeatingEnabled(player)) {
+        if (userManager.hasSeatingEnable(player, CRAWL)) {
             if (crawlDataRegistry.removeRegistry(player) == null) {
                 crawlDataRegistry.createAndAddRegistry(player, null);
             }

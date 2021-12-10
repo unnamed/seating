@@ -8,7 +8,8 @@ public interface SeatingHandler {
 
     String SIT_PERMISSION = "seating.sit";
     String CRAWL_PERMISSION = "seating.crawl";
-    String SIT_TOGGLE_PERMISSION = "seating.toggle";
+    String SIT_TOGGLE_PERMISSION = "seating.sit-toggle";
+    String CRAWL_TOGGLE_PERMISSION = "seating.crawl-toggle";
 
     boolean isInChairUseRange(Player player, Block block);
 
@@ -16,7 +17,7 @@ public interface SeatingHandler {
 
     boolean isChairMaterial(Block block);
 
-    void toggleSeating(Player player);
+    void toggleSeating(Player player, byte property);
 
     void sit(Player player, Block block, boolean ignoreType);
 
