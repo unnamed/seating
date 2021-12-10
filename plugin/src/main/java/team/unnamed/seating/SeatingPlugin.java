@@ -2,6 +2,8 @@ package team.unnamed.seating;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -23,7 +25,7 @@ import team.unnamed.seating.message.MessageHandler;
 import team.unnamed.seating.registry.ChairSeatingDataRegistry;
 import team.unnamed.seating.registry.CrawlSeatingDataRegistry;
 import team.unnamed.seating.user.SimpleUserManager;
-import team.unnamed.seating.user.UserToggleSeatingManager;
+import team.unnamed.seating.user.UserManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,7 +38,7 @@ public class SeatingPlugin extends JavaPlugin {
 
     private MessageHandler messageHandler;
     private AdaptionModule adaptionModule;
-    private UserToggleSeatingManager userToggleSeatingManager;
+    private UserManager userManager;
     private HookRegistry hookRegistry;
     private SeatingHandler seatingHandler;
     private SeatingEntityHandler seatingEntityHandler;
@@ -48,11 +50,11 @@ public class SeatingPlugin extends JavaPlugin {
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
 
-        userToggleSeatingManager = new SimpleUserManager();
+        userManager = new SimpleUserManager();
 
         try {
             adaptionModule = AdaptionModuleFactory.create();
-            userToggleSeatingManager.loadData(this);
+            userManager.loadData(this);
         } catch (Exception e) {
             e.printStackTrace();
             Bukkit.getPluginManager().disablePlugin(this);
@@ -79,7 +81,7 @@ public class SeatingPlugin extends JavaPlugin {
                 getConfig(), messageHandler,
                 crawlDataRegistry, chairDataRegistry,
                 hookRegistry, adaptionModule.getMaterialChecker(),
-                userToggleSeatingManager
+                userManager
         );
 
         adaptionModule.registerPacketInterceptors(this);
@@ -111,14 +113,18 @@ public class SeatingPlugin extends JavaPlugin {
         }
 
         try {
-            userToggleSeatingManager.saveData(this);
+            userManager.saveData(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void registerCommand(String name, CommandExecutor executor) {
-        getCommand(name).setExecutor(executor);
+    private <T extends CommandExecutor & TabCompleter> void registerCommand(
+            String name, T command
+    ) {
+        PluginCommand pluginCommand = getCommand(name);
+        pluginCommand.setExecutor(command);
+        pluginCommand.setTabCompleter(command);
     }
 
     private void listen(List<Listener> listeners) {
