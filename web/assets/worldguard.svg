@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <style>
+      .a {
+        fill: #ccc;
+      }
+
+      .b {
+        fill: #999;
+      }
+
+      .c {
+        fill: #fff;
+      }
+
+      .d {
+        fill: #583459;
+      }
+
+      .e {
+        fill: #ff8df8;
+      }
+
+      .f {
+        fill: #bf6bbd;
+      }
+
+      .g {
+        fill: #7f497f;
+      }
+
+      .h {
+        fill: #e276e5;
+      }
+    </style>
+  </defs>
+  <g>
+    <rect class="a" x="8.53" y="110.93" width="8.53" height="8.53"/>
+    <rect class="b" x="17.07" y="119.47" width="8.53" height="8.53"/>
+    <rect class="b" x="8.53" y="119.47" width="8.53" height="8.53"/>
+    <rect class="c" x="17.07" y="110.93" width="8.53" height="8.53"/>
+    <rect class="c" x="25.6" y="102.4" width="8.53" height="8.53"/>
+    <rect class="c" x="34.13" y="93.87" width="8.53" height="8.53"/>
+    <rect class="c" x="42.67" y="85.33" width="8.53" height="8.53"/>
+    <rect class="c" x="51.2" y="76.8" width="8.53" height="8.53"/>
+    <rect class="c" x="59.73" y="68.27" width="8.53" height="8.53"/>
+    <rect class="c" x="68.27" y="59.73" width="8.53" height="8.53"/>
+    <rect class="d" x="76.8" y="68.27" width="8.53" height="8.53"/>
+    <rect class="d" x="85.33" y="76.8" width="8.53" height="8.53"/>
+    <rect class="d" x="102.4" y="68.27" width="8.53" height="8.53"/>
+    <rect class="d" x="110.93" y="59.73" width="8.53" height="8.53"/>
+    <rect class="d" x="110.93" y="51.2" width="8.53" height="8.53"/>
+    <rect class="d" x="102.4" y="42.67" width="8.53" height="8.53"/>
+    <rect class="d" x="93.87" y="25.6" width="8.53" height="8.53"/>
+    <rect class="d" x="93.87" y="17.07" width="8.53" height="8.53"/>
+    <rect class="d" x="85.33" y="8.53" width="8.53" height="8.53"/>
+    <rect class="d" x="76.8" width="8.53" height="8.53"/>
+    <rect class="d" x="68.27" width="8.53" height="8.53"/>
+    <rect class="d" x="59.73" y="8.53" width="8.53" height="8.53"/>
+    <rect class="d" x="51.2" y="17.07" width="8.53" height="8.53"/>
+    <rect class="d" x="42.67" y="25.6" width="8.53" height="8.53"/>
+    <rect class="d" x="34.13" y="34.13" width="8.53" height="8.53"/>
+    <rect class="d" x="34.13" y="42.67" width="8.53" height="8.53"/>
+    <rect class="e" x="42.67" y="42.67" width="8.53" height="8.53"/>
+    <rect class="e" x="42.67" y="34.13" width="8.53" height="8.53"/>
+    <rect class="e" x="51.2" y="42.67" width="8.53" height="8.53"/>
+    <rect class="e" x="51.2" y="51.2" width="8.53" height="8.53"/>
+    <rect class="e" x="59.73" y="51.2" width="8.53" height="8.53"/>
+    <rect class="e" x="51.2" y="25.6" width="8.53" height="8.53"/>
+    <rect class="e" x="59.73" y="25.6" width="8.53" height="8.53"/>
+    <rect class="e" x="59.73" y="17.07" width="8.53" height="8.53"/>
+    <rect class="e" x="68.27" y="17.07" width="8.53" height="8.53"/>
+    <rect class="e" x="76.8" y="17.07" width="8.53" height="8.53"/>
+    <rect class="e" x="68.27" y="8.53" width="8.53" height="8.53"/>
+    <rect class="e" x="76.8" y="8.53" width="8.53" height="8.53"/>
+    <rect class="e" x="85.33" y="17.07" width="8.53" height="8.53"/>
+    <rect class="e" x="85.33" y="25.6" width="8.53" height="8.53"/>
+    <rect class="e" x="85.33" y="68.27" width="8.53" height="8.53"/>
+    <rect class="e" x="93.87" y="68.27" width="8.53" height="8.53"/>
+    <rect class="f" x="85.33" y="59.73" width="8.53" height="8.53"/>
+    <rect class="g" x="85.33" y="51.2" width="8.53" height="8.53"/>
+    <rect class="g" x="76.8" y="42.67" width="8.53" height="8.53"/>
+    <rect class="f" x="93.87" y="59.73" width="8.53" height="8.53"/>
+    <rect class="f" x="93.87" y="51.2" width="8.53" height="8.53"/>
+    <rect class="f" x="76.8" y="51.2" width="8.53" height="8.53"/>
+    <rect class="f" x="85.33" y="42.67" width="8.53" height="8.53"/>
+    <rect class="f" x="68.27" y="42.67" width="8.53" height="8.53"/>
+    <rect class="f" x="68.27" y="34.13" width="8.53" height="8.53"/>
+    <rect class="f" x="68.27" y="25.6" width="8.53" height="8.53"/>
+    <rect class="f" x="76.8" y="34.13" width="8.53" height="8.53"/>
+    <rect class="f" x="59.73" y="34.13" width="8.53" height="8.53"/>
+    <rect class="h" x="59.73" y="42.67" width="8.53" height="8.53"/>
+    <rect class="h" x="76.8" y="25.6" width="8.53" height="8.53"/>
+    <rect class="e" x="51.2" y="34.13" width="8.53" height="8.53"/>
+    <rect class="e" x="102.4" y="59.73" width="8.53" height="8.53"/>
+    <rect class="e" x="102.4" y="51.2" width="8.53" height="8.53"/>
+    <rect class="d" x="42.67" y="51.2" width="8.53" height="8.53"/>
+    <rect class="d" x="51.2" y="59.73" width="8.53" height="8.53"/>
+    <rect class="d" x="93.87" y="76.8" width="8.53" height="8.53"/>
+    <rect class="b" x="25.6" y="110.93" width="8.53" height="8.53"/>
+    <rect class="b" x="34.13" y="102.4" width="8.53" height="8.53"/>
+    <rect class="b" x="42.67" y="93.87" width="8.53" height="8.53"/>
+    <rect class="b" x="51.2" y="85.33" width="8.53" height="8.53"/>
+    <rect class="b" x="59.73" y="76.8" width="8.53" height="8.53"/>
+    <rect class="b" x="68.27" y="68.27" width="8.53" height="8.53"/>
+    <rect class="b" x="76.8" y="59.73" width="8.53" height="8.53"/>
+    <rect class="b" x="93.87" y="42.67" width="8.53" height="8.53"/>
+    <rect class="b" x="93.87" y="34.13" width="8.53" height="8.53"/>
+    <rect class="a" x="85.33" y="34.13" width="8.53" height="8.53"/>
+    <rect class="a" x="17.07" y="102.4" width="8.53" height="8.53"/>
+    <rect class="a" x="25.6" y="93.87" width="8.53" height="8.53"/>
+    <rect class="a" x="34.13" y="85.33" width="8.53" height="8.53"/>
+    <rect class="a" x="42.67" y="76.8" width="8.53" height="8.53"/>
+    <rect class="a" x="51.2" y="68.27" width="8.53" height="8.53"/>
+    <rect class="a" x="59.73" y="59.73" width="8.53" height="8.53"/>
+    <rect class="a" x="68.27" y="51.2" width="8.53" height="8.53"/>
+  </g>
+</svg>
