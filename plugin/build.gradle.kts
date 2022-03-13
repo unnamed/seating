@@ -17,6 +17,7 @@ dependencies {
 
     if (java >= 17) {
         runtimeOnly(project(":adapt:adapt-v1_18_R1"))
+        runtimeOnly(project(":adapt:adapt-v1_18_R2"))
     }
 }
 
